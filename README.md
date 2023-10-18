@@ -53,6 +53,8 @@ Users should be able to:
 
 ### Useful resources
 
+1. [Downgrade React Vite from v18 to v17](https://dev.to/ifeanyichima/how-to-downgrade-from-react-18-to-1702-818) -- to apply `react-swipeable-views`
+
 ## Development resources
 
 - [設計稿（密碼：alphacamp）](https://www.figma.com/file/yRwY6jkmQbysRBIqr7A0bv/Capstone-Podcast?type=design&node-id=0-1&mode=design)
