@@ -1,29 +1,25 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import SpotifyLogin from "./api/auth";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Home from "./pages/Home";
+import Pending from "./pages/Pending";
+import Login from "./pages/Login";
+import Podcast from "./pages/Podcast";
+import Favorite from "./pages/Favorite";
 
 function App() {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="app">
+        <BrowserRouter>
+          <Routes>
+            <Route path="home" element={<Home />} />
+            <Route path="pending" element={<Pending />} />
+            <Route path="login" element={<Login />} />
+            <Route path="podcast" element={<Podcast />} />
+            <Route path="favorite" element={<Favorite />} />
+          </Routes>
+        </BrowserRouter>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <SpotifyLogin />
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
