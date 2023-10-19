@@ -8,16 +8,17 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import logo from "../assets/logo.svg";
 import Image from "mui-image";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import AccountMenu from "./AccountMenu";
+import { Stack } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -31,21 +32,18 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <Toolbar />
-      <Image src={logo} height="20%" width="80%" fit="contain" duration={0} />
+      <Toolbar>
+        <Image src={logo} height="20%" width="80%" fit="contain" duration={0} />
+      </Toolbar>
       <Divider />
       <List>
         {["Podcast", "我的最愛"].map((text, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-              <ListItemIcon>
-                <MoreVertIcon />
-              </ListItemIcon>
-            </ListItemButton>
+            <ListItemIcon edge="start" aria-label="emoji">
+              <EmojiEmotionsIcon />
+            </ListItemIcon>
+            <ListItemText primary={text} />
+            <ToggleMenu />
           </ListItem>
         ))}
         <Divider />
@@ -78,9 +76,18 @@ function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            早安！
-          </Typography>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+            sx={{ p: 1 }}
+          >
+            <Typography variant="h6" noWrap component="div">
+              早安！
+            </Typography>
+            <AccountMenu />
+          </Stack>
         </Toolbar>
       </AppBar>
       <Box
@@ -145,3 +152,17 @@ ResponsiveDrawer.propTypes = {
 };
 
 export default ResponsiveDrawer;
+
+function ToggleMenu() {
+  const options = ["None", "Atria", "Callisto", "Dione"];
+
+  const ITEM_HEIGHT = 48;
+
+  return (
+    <div>
+      <IconButton aria-label="more" id="long-button">
+        <MoreVertIcon />
+      </IconButton>
+    </div>
+  );
+}
