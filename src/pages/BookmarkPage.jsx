@@ -1,19 +1,16 @@
 import ResponsiveDrawer from "../components/Appbar/ResponsiveDrawer";
+import { Grid, Box } from "@mui/material";
+import { PodcastCardCollection } from "../components/PodcastCard";
 import NowPlaying from "../components/NowPlaying";
-import { Grid } from "@mui/material";
-import Box from "@mui/material/Box";
-import { SongCardCollection } from "../components/SongCard";
-import "./Favorite.scss";
-import { styled } from "@mui/material/styles";
 
-export default function Favorite() {
+export default function BookmarkPage() {
   return (
     <ResponsiveDrawer>
       <Grid container direction="row" spacing={2}>
         <Grid item lg={9}>
           <HideOnScroll>
             <Box>
-              <SongCardCollection />
+              <PodcastCardCollection />
             </Box>
           </HideOnScroll>
         </Grid>

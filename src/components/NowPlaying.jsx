@@ -1,6 +1,8 @@
 import { Card, Divider, Stack } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import NavigateModal from "./NavigateModal";
+import NavigateModal from "./Modal/NavigateModal";
+import EmojiPicker from "emoji-picker-react";
+import EditModal from "./Modal/EditModal";
 
 export default function NowPlaying() {
   return (
@@ -23,7 +25,7 @@ export default function NowPlaying() {
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
       ></iframe>
-      <NavigateModal />
+      <EditModal />
     </Card>
   );
 }

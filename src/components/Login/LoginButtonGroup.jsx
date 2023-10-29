@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import logo from "../assets/logo.svg";
+import logo from "../../assets/logo.svg";
 import Image from "mui-image";
 
 export default function LoginButtonGroup() {

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Divider, Stack } from "@mui/material";
+import { Divider, IconButton, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Search Bar
@@ -13,10 +13,11 @@ import InputBase from "@mui/material/InputBase";
 
 // CircularProgress
 import CircularProgress from "@mui/material/CircularProgress";
-import { PodcastCardCollection } from "./PodcastCard";
+import { PodcastCardCollection } from "../PodcastCard";
 
-// Hide Scroll
-import CssBaseline from "@mui/material/CssBaseline";
+// useContext
+
+import { useApp } from "../../contexts/AppContext";
 
 const style = {
   position: "absolute",
@@ -48,13 +49,25 @@ const ButtonGroupstyle = {
 };
 
 export default function NavigateModal() {
+  const { editBookmark, setEditBookmark } = useApp();
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setEditBookmark({ edit: null, target: null, doublecheck: null });
+  };
+
+  React.useEffect(() => {
+    const { target, edit } = editBookmark;
+
+    if (target && edit === "navigate") {
+      handleOpen();
+    }
+  }, [editBookmark.edit]);
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -71,7 +84,9 @@ export default function NavigateModal() {
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 新增Poodcast
               </Typography>
-              <CloseIcon />
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
             </Stack>
 
             <Divider />
@@ -80,7 +95,9 @@ export default function NavigateModal() {
           </Stack>
           <Box sx={ButtonGroupstyle}>
             <Stack direction="row" justifyContent="end">
-              <Button sx={{ width: "200px" }}>取消</Button>
+              <Button sx={{ width: "200px" }} onClick={handleClose}>
+                取消
+              </Button>
               <Button sx={{ width: "200px" }}>確認新增</Button>
             </Stack>
           </Box>
@@ -152,7 +169,6 @@ function SearchResult() {
     <>
       <Typography>搜尋結果</Typography>
       <Box>
-        <CssBaseline />
         <HideOnScroll>
           <PodcastCardCollection />
         </HideOnScroll>

@@ -6,22 +6,25 @@ import Login from "./pages/Login";
 import Podcast from "./pages/Podcast";
 import Favorite from "./pages/Favorite";
 import MUIthemeProvider from "./styles/themeProvider";
+import { AppProvider } from "./contexts/AppContext";
 
 function App() {
   return (
     <>
       <div className="app">
-        <MUIthemeProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="home" element={<Home />} />
-              <Route path="pending" element={<Pending />} />
-              <Route path="login" element={<Login />} />
-              <Route path="podcast" element={<Podcast />} />
-              <Route path="favorite" element={<Favorite />} />
-            </Routes>
-          </BrowserRouter>
-        </MUIthemeProvider>
+        <AppProvider>
+          <MUIthemeProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="home" element={<Home />} />
+                <Route path="pending" element={<Pending />} />
+                <Route path="login" element={<Login />} />
+                <Route path="podcast" element={<Podcast />} />
+                <Route path="favorite" element={<Favorite />} />
+              </Routes>
+            </BrowserRouter>
+          </MUIthemeProvider>
+        </AppProvider>
       </div>
     </>
   );

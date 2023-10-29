@@ -1,4 +1,4 @@
-import { Card, Grid } from "@mui/material";
+import { Box, Card, Grid } from "@mui/material";
 import data from "../data/podcast.json";
 import Image from "mui-image";
 

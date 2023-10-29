@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,11 +13,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import logo from "../assets/logo.svg";
+import logo from "../../assets/logo.svg";
 import Image from "mui-image";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import AccountMenu from "./AccountMenu";
-import { Stack } from "@mui/material";
+import { ListItemButton, Stack } from "@mui/material";
+import { BookmarkItem } from "./BookmarkItem/BookmarkItem";
+import { useApp } from "../../contexts/AppContext";
+import DeleteModal from "../Modal/DeleteModal";
+import EditModal from "../Modal/EditModal";
+import NavigateModal from "../Modal/NavigateModal";
+import AddNewButton from "./BookmarkItem/AddNewButton";
 
 const drawerWidth = 240;
 
@@ -30,6 +35,8 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const { bookmarkData } = useApp();
+
   const drawer = (
     <div>
       <Toolbar>
@@ -39,15 +46,22 @@ function ResponsiveDrawer(props) {
       <List>
         {["Podcast", "我的最愛"].map((text, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemIcon edge="start" aria-label="emoji">
-              <EmojiEmotionsIcon />
-            </ListItemIcon>
-            <ListItemText primary={text} />
-            <ToggleMenu />
+            <ListItemButton>
+              <ListItemIcon edge="start" aria-label="emoji">
+                <EmojiEmotionsIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} />
+              <IconButton aria-label="more" id="long-button">
+                <MoreVertIcon />
+              </IconButton>
+            </ListItemButton>
           </ListItem>
         ))}
         <Divider />
-        <button>新增分類</button>
+        <AddNewButton />
+        {bookmarkData.map((bookmark, index) => (
+          <BookmarkItem name={bookmark.title} id={bookmark.id} key={index} />
+        ))}
       </List>
     </div>
   );
@@ -137,32 +151,14 @@ function ResponsiveDrawer(props) {
         }}
       >
         <Toolbar />
+        {/* Apply Modal */}
+        <DeleteModal />
+        <EditModal />
+        <NavigateModal />
         {props.children}
       </Box>
     </Box>
   );
 }
 
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
 export default ResponsiveDrawer;
-
-function ToggleMenu() {
-  const options = ["None", "Atria", "Callisto", "Dione"];
-
-  const ITEM_HEIGHT = 48;
-
-  return (
-    <div>
-      <IconButton aria-label="more" id="long-button">
-        <MoreVertIcon />
-      </IconButton>
-    </div>
-  );
-}

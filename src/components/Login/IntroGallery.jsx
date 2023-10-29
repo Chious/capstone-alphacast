@@ -1,6 +1,6 @@
-import img1 from "../assets/login--1.svg";
-import img2 from "../assets/login--2.svg";
-import img3 from "../assets/login--3.svg";
+import img1 from "../../assets/login--1.svg";
+import img2 from "../../assets/login--2.svg";
+import img3 from "../../assets/login--3.svg";
 
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";

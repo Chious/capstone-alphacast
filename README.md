@@ -54,6 +54,9 @@ Users should be able to:
 ### Useful resources
 
 1. [Downgrade React Vite from v18 to v17](https://dev.to/ifeanyichima/how-to-downgrade-from-react-18-to-1702-818) -- to apply `react-swipeable-views`
+2. [Emoji Picker](https://www.npmjs.com/package/emoji-picker-react)
+
+3. [getBoundingClientRect()](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) -- help to place MenuList.
 
 ## Development resources
 
