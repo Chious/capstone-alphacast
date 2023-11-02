@@ -1,5 +1,5 @@
 import ResponsiveDrawer from "../components/Appbar/ResponsiveDrawer";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, styled } from "@mui/material";
 import { PodcastCardCollection } from "../components/PodcastCard";
 import NowPlaying from "../components/NowPlaying";
 

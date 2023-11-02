@@ -5,8 +5,25 @@ import Image from "mui-image";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useLocation } from "react-router-dom";
+import { useApp } from "../contexts/AppContext";
 
 export default function Pending() {
+  const location = useLocation();
+  const [spotifyParams, setSpotifyParams] = React.useState();
+  const { setAccessToken, Auth } = useApp();
+
+  React.useEffect(() => {
+    const state = new URLSearchParams(location.search).get("state");
+
+    if (location.pathname === "/pending" && state) {
+      const code = new URLSearchParams(location.search).get("code");
+
+      setAccessToken({ code });
+      console.log(Auth);
+    }
+  }, [location]);
+
   return (
     <Stack
       sx={{

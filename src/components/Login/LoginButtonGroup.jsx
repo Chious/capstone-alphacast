@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
 import logo from "../../assets/logo.svg";
 import Image from "mui-image";
+import { SpotifyLogin } from "../../api/auth";
 
 export default function LoginButtonGroup() {
   return (
@@ -12,7 +13,7 @@ export default function LoginButtonGroup() {
     >
       <Image src={logo} height="10%" width="30%" fit="contain" />
       <h1>Connecting Stories That Matter</h1>
-      <button>使用SPOTIFT帳號登入</button>
+      <SpotifyLogin />
       <h2>沒有帳號嗎？註冊帳號</h2>
     </Stack>
   );
