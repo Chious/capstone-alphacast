@@ -1,6 +1,8 @@
 import { createContext, useState, useContext } from "react";
 import bookmarkdata from "../data/bookmark.json";
 import { GetAccessToken } from "../api/auth";
+import { GetUser } from "../api/spotifyAPI";
+import { CreateAccount } from "../api/acAPI";
 
 const defaultAppContext = {
   bookmarkData: [],
@@ -8,13 +10,16 @@ const defaultAppContext = {
   editBookdark: null,
   setEditBookmark: null,
   setAccessToken: null,
-  Auth: null,
+  GetUser: null,
+  user: null,
+  CreateAccount: null,
 };
 
 const AppContext = createContext(defaultAppContext);
 
 export const useApp = () => useContext(AppContext);
 export const AppProvider = ({ children }) => {
+  const [user, setUser] = useState();
   const [bookmarkData, setBookmarkData] = useState(bookmarkdata);
   const [editBookmark, setEditBookmark] = useState({
     target: null,
@@ -22,8 +27,6 @@ export const AppProvider = ({ children }) => {
     doublecheck: null,
     count: 1000000,
   });
-
-  const [auth, setAuth] = useState({});
 
   return (
     <AppContext.Provider
@@ -33,10 +36,18 @@ export const AppProvider = ({ children }) => {
         editBookmark,
         setEditBookmark,
         setAccessToken: async ({ code }) => {
-          const data = await GetAccessToken({ code });
-          setAuth(data);
+          await GetAccessToken({ code });
         },
-        Auth: auth,
+        GetUser: async () => {
+          const response = await GetUser();
+          if (response !== undefined) {
+            setUser(response);
+          }
+        },
+        user,
+        CreateAccount: async () => {
+          await CreateAccount();
+        },
       }}
     >
       {children}

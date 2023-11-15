@@ -1,9 +1,9 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Divider, IconButton, Stack } from "@mui/material";
+import { Divider, IconButton, Stack, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Search Bar
@@ -16,8 +16,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { PodcastCardCollection } from "../PodcastCard";
 
 // useContext
-
 import { useApp } from "../../contexts/AppContext";
+
+// Spotify api
+import { searchEpisodes } from "../../api/spotifyAPI";
 
 const style = {
   position: "absolute",
@@ -48,17 +50,16 @@ const ButtonGroupstyle = {
   borderRadius: "0px 0px 5px 5px",
 };
 
-export default function NavigateModal() {
+export default function NavigateModal({ open, setOpen }) {
   const { editBookmark, setEditBookmark } = useApp();
 
-  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setEditBookmark({ edit: null, target: null, doublecheck: null });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const { target, edit } = editBookmark;
 
     if (target && edit === "navigate") {
@@ -109,58 +110,29 @@ export default function NavigateModal() {
 
 // Search Bar
 function SearchInput() {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
+  const [input, setInput] = useState("");
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+  const handleInput = (e) => {
+    setInput(e.target.value);
+  };
 
   return (
-    <Search>
-      <SearchIconWrapper>
-        <SearchIcon />
-      </SearchIconWrapper>
-      <StyledInputBase
-        placeholder="Search…"
-        inputProps={{ "aria-label": "search" }}
+    <Stack direction="row" alignItems="center" spacing={1} width="100%">
+      <SearchIcon />
+      <TextField
+        placeholder="type something..."
+        onChange={handleInput}
+        sx={{ height: "50px", width: "80%" }}
       />
-    </Search>
+      <button
+        onClick={async () => {
+          searchEpisodes();
+        }}
+        style={{ height: "50px" }}
+      >
+        提交
+      </button>
+    </Stack>
   );
 }
 

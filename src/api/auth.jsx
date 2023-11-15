@@ -50,6 +50,8 @@ export const GetAccessToken = async ({ code }) => {
 
   try {
     const { data } = await axios.post(url, params, { headers });
+    localStorage.setItem("spotifyToken", data.access_token);
+    localStorage.setItem("refreshToken", data.refresh_token);
     return data;
   } catch (error) {
     return error;
@@ -58,23 +60,21 @@ export const GetAccessToken = async ({ code }) => {
 
 export const getRefreshToken = async () => {
   // refresh token that has been previously stored
-  const refreshToken = localStorage.getItem("refresh_token");
+  const refreshToken = localStorage.getItem("refreshToken");
   const url = "https://accounts.spotify.com/api/token";
 
-  const payload = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-      client_id: clientId,
-    }),
+  const config = {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
   };
-  const body = await fetch(url, payload);
-  const response = await body.json();
+  const bodyParameters = { code: refreshToken };
 
-  localStorage.setItem("access_token", response.accessToken);
-  localStorage.setItem("refresh_token", response.refreshToken);
+  axios
+    .post(url, config, bodyParameters)
+    .then((data) => {
+      const { access_token, refresh_token } = data;
+
+      localStorage.setItem("spotifyToken", access_token);
+      localStorage.setItem("refreshToken", refresh_token);
+    })
+    .catch((error) => console.log(error));
 };

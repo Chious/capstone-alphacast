@@ -1,28 +1,38 @@
 import { Stack } from "@mui/material";
 import logo from "../assets/logo.svg";
 import Image from "mui-image";
-
-import * as React from "react";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
+import { useEffect, useState, useRef } from "react";
 
 export default function Pending() {
   const location = useLocation();
-  const [spotifyParams, setSpotifyParams] = React.useState();
-  const { setAccessToken, Auth } = useApp();
+  const navigeate = useNavigate();
+  const { setAccessToken, GetUser, CreateAccount } = useApp();
+  const acToken = localStorage.getItem("acToken");
 
-  React.useEffect(() => {
+  //1. Get Access token from Spotify and backend
+  useEffect(() => {
     const state = new URLSearchParams(location.search).get("state");
 
     if (location.pathname === "/pending" && state) {
       const code = new URLSearchParams(location.search).get("code");
 
-      setAccessToken({ code });
-      console.log(Auth);
+      setAccessToken({ code })
+        .then(() => new Promise((reslove) => setTimeout(reslove, 1000))) //wait for second, after Spotify create token.
+        .then(GetUser())
+        .then(CreateAccount());
     }
-  }, [location]);
+  }, []);
+
+  //2. If get token from backend, navigate to "/favorite"
+  useEffect(() => {
+    if (acToken) {
+      navigeate("/favorite");
+    }
+  }, [acToken]);
 
   return (
     <Stack
@@ -44,11 +54,11 @@ export default function Pending() {
 }
 
 function LinearBuffer() {
-  const [progress, setProgress] = React.useState(0);
-  const [buffer, setBuffer] = React.useState(10);
+  const [progress, setProgress] = useState(0);
+  const [buffer, setBuffer] = useState(10);
 
-  const progressRef = React.useRef(() => {});
-  React.useEffect(() => {
+  const progressRef = useRef(() => {});
+  useEffect(() => {
     progressRef.current = () => {
       if (progress > 100) {
         setProgress(0);
@@ -62,7 +72,7 @@ function LinearBuffer() {
     };
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       progressRef.current();
     }, 500);

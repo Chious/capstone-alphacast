@@ -1,9 +1,10 @@
-import { Card, Grid, Stack } from "@mui/material";
+import { Card, Grid, IconButton, Stack } from "@mui/material";
 import data from "../data/songs.json";
 import Image from "mui-image";
 import imgFolder from "../assets/favorite-empty-folder.svg";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 export const SongNoFound = () => {
   return (
@@ -57,11 +58,16 @@ export const SongCard = ({ data }) => {
                 justifyContent="space-between"
               >
                 <p className="song-card-title">{title}</p>
-                <BookmarkBorderIcon />
+                <IconButton>
+                  <BookmarkIcon />
+                </IconButton>
               </Stack>
               <p className="song-card-author">{description}</p>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <PlayCircleIcon className="song-card-play-btn" />
+                <IconButton>
+                  <PlayCircleIcon className="song-card-play-btn" />
+                </IconButton>
+
                 <p>
                   {date}・{videoLength}
                 </p>

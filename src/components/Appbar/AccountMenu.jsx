@@ -12,8 +12,13 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Typography, Stack } from "@mui/material";
+import { useApp } from "../../contexts/AppContext";
+import Image from "mui-image";
 
 export default function AccountMenu() {
+  //Get user info
+  const { user } = useApp();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -47,7 +52,7 @@ export default function AccountMenu() {
               }}
             >
               <Avatar sx={{ width: 32, height: 32 }}>J</Avatar>
-              <Typography>John Doe</Typography>
+              <Typography>Joe Biden</Typography>
               <KeyboardArrowDownIcon />
             </Stack>
           </IconButton>

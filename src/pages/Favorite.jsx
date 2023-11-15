@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { SongCardCollection } from "../components/SongCard";
 import "./Favorite.scss";
 import { styled } from "@mui/material/styles";
+import NoEpisodeFound from "../components/Favorite/NoEpisodeFound";
 
 export default function Favorite() {
   return (
@@ -12,8 +13,8 @@ export default function Favorite() {
       <Grid container direction="row" spacing={2}>
         <Grid item lg={9}>
           <HideOnScroll>
-            <Box>
-              <SongCardCollection />
+            <Box width="100%">
+              <NoEpisodeFound />
             </Box>
           </HideOnScroll>
         </Grid>
