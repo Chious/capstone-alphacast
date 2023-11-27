@@ -21,7 +21,7 @@ export default function Pending() {
       const code = new URLSearchParams(location.search).get("code");
 
       setAccessToken({ code })
-        .then(() => new Promise((reslove) => setTimeout(reslove, 1000))) //wait for second, after Spotify create token.
+        .then(() => new Promise((reslove) => setTimeout(reslove, 2000))) //wait for second, after Spotify create token.
         .then(GetUser())
         .then(CreateAccount());
     }
@@ -29,7 +29,7 @@ export default function Pending() {
 
   //2. If get token from backend, navigate to "/favorite"
   useEffect(() => {
-    if (acToken) {
+    if (acToken !== undefined && acToken) {
       navigeate("/favorite");
     }
   }, [acToken]);

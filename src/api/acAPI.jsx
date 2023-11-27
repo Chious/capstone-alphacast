@@ -26,7 +26,7 @@ export const CreateAccount = async () => {
   axios
     .post(uri, bodyParameters)
     .then((data) => {
-      const { token } = data;
+      const token = data.data.token;
       localStorage.setItem("acToken", token);
     })
     .catch((err) => console.log(err));
@@ -43,6 +43,36 @@ export const RemoveFavorite = async ({ episode }) => {
   };
 
   axios.delete(uri, config);
+};
+
+export const PostFavorite = async (episode) => {
+  const uri = baseUri + "api/episodes";
+  const acToken = localStorage.getItem("acToken");
+
+  const bodyParam = { episodeId: episode };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${acToken}`,
+    },
+  };
+
+  const response = await axios
+    .post(uri, bodyParam, config)
+    .then((data) => {
+      return "success";
+    })
+    .catch((err) => {
+      console.log("err: ", err);
+      if (err.error.status === 403) {
+        console.log("Invalid token!");
+      }
+
+      if (err.error.status === 409) {
+        console.log("User has already favorited this episode");
+      }
+    });
+
+  return response;
 };
 
 export const GetCategory = async () => {

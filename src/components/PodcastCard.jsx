@@ -1,13 +1,12 @@
 import { Box, Card, Grid } from "@mui/material";
-import data from "../data/podcast.json";
 import Image from "mui-image";
 import { useState } from "react";
 
-export const PodcastCard = ({ data, index, card, setCard }) => {
-  const { title, author, imgSrc } = data;
-  const choosenCard = card.index;
+export const PodcastCard = ({ data, card, setCard, author }) => {
+  const { title, id, imgSrc } = data;
+  const choosenCard = card.id;
   const chooseCardStyle =
-    choosenCard === index
+    choosenCard === id
       ? {
           border: "1px solid orange",
         }
@@ -16,11 +15,10 @@ export const PodcastCard = ({ data, index, card, setCard }) => {
         };
 
   const handleClick = () => {
-    if (choosenCard === index) {
-      setCard({ index: null, title: null, author: null, imgSrc: null });
-      console.log("clear!");
+    if (choosenCard === id) {
+      setCard({ id: null, title: null, author: null, imgSrc: null });
     } else {
-      setCard({ index: index, title: title, author: author, imgSrc: imgSrc });
+      setCard({ id: id, title: title, author: null, imgSrc: imgSrc });
     }
   };
 
@@ -57,22 +55,20 @@ export const PodcastCard = ({ data, index, card, setCard }) => {
   );
 };
 
-export const PodcastCardCollection = () => {
-  const [card, setCard] = useState({
-    index: null,
-    title: null,
-    author: null,
-    imgSrc: null,
-  });
-
+export const PodcastCardCollection = ({ data, authorList, card, setCard }) => {
   const podcastcards = data.map((item, index) => {
+    const { id, name, images } = item;
+    const imgSrc = images[0].url;
+
+    const data = { id: id, title: name, imgSrc: imgSrc };
+
     return (
       <PodcastCard
-        data={item}
-        key={index}
+        data={data}
+        key={id}
         card={card}
         setCard={setCard}
-        index={index}
+        author={authorList[index]}
       />
     );
   });

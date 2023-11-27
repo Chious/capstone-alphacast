@@ -11,11 +11,11 @@ curl --request GET \
   --header 'Authorization: Bearer 1POdFZRZbvb...qqillRxMr2z'
 */
 
-export const searchEpisodes = async () => {
+export const searchEpisodes = async ({ input }) => {
   const url = import.meta.env.VITE_SPOTIFY_BASE_URL + "v1/search";
   const spotifyToken = localStorage.getItem("spotifyToken");
   const params = {
-    q: "百靈果",
+    q: input,
     type: "episode",
     market: "TW",
     limit: 15,
@@ -34,18 +34,40 @@ export const searchEpisodes = async () => {
     .catch((err) => console.log(err));
 
   if (response !== undefined) {
-    return response;
+    return response.data.episodes.items;
   }
 };
 
-//2. Search for episode
-/*
+//2. Search for Author name
 
-curl --request GET \
-  --url 'https://api.spotify.com/v1/search?q=SEARCH_NAME&type=episode' \
-  --header 'Authorization: Bearer 1POdFZRZbvb...qqillRxMr2z'
+export const GetAuthors = async (ids) => {
+  /*const ids = ["1766nrskjXkwFHqG45trIP", "1MPUx6gvgr4WK4Ax7He24q"];*/
+  const idsString = ids.join(",");
 
-*/
+  const url = import.meta.env.VITE_SPOTIFY_BASE_URL + "v1/episodes";
+  const spotifyToken = localStorage.getItem("spotifyToken");
+  const params = { ids: idsString };
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + spotifyToken,
+    },
+    params,
+  };
+
+  const response = axios
+    .get(url, config)
+    .then((data) => {
+      const rawData = data.data.episodes;
+      const authorList = rawData.map((episodeObj) => {
+        return episodeObj.show.name;
+      });
+      return authorList;
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
 
 //3. Get User's Information
 

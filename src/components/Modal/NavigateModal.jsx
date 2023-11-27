@@ -8,8 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 // Search Bar
 import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
+import { styled } from "@mui/material/styles";
 
 // CircularProgress
 import CircularProgress from "@mui/material/CircularProgress";
@@ -19,7 +18,8 @@ import { PodcastCardCollection } from "../PodcastCard";
 import { useApp } from "../../contexts/AppContext";
 
 // Spotify api
-import { searchEpisodes } from "../../api/spotifyAPI";
+import { searchEpisodes, GetAuthors } from "../../api/spotifyAPI";
+import { PostFavorite } from "../../api/acAPI";
 
 const style = {
   position: "absolute",
@@ -67,6 +67,32 @@ export default function NavigateModal({ open, setOpen }) {
     }
   }, [editBookmark.edit]);
 
+  //set Data from search result
+  const [data, setData] = useState([]);
+  const [authorList, setAuthorList] = useState([]);
+  //remember selected card
+  const [card, setCard] = useState({
+    id: null,
+    title: null,
+    author: null,
+    imgSrc: null,
+  });
+
+  //Submit
+
+  const handleSubmit = async () => {
+    if (card.id !== null) {
+      const { id } = card; //Episode ID
+      console.log("id: ", id);
+
+      const res = PostFavorite(id); // post id to favorite
+      if (res === "success") {
+        console.log("success!");
+        handleClose(); // Close the modal
+      }
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -91,15 +117,27 @@ export default function NavigateModal({ open, setOpen }) {
             </Stack>
 
             <Divider />
-            <SearchInput />
-            <SearchResult />
+            <SearchInput setData={setData} setAuthorList={setAuthorList} />
+            <SearchResult
+              data={data}
+              authorList={authorList}
+              card={card}
+              setCard={setCard}
+            />
           </Stack>
           <Box sx={ButtonGroupstyle}>
             <Stack direction="row" justifyContent="end">
               <Button sx={{ width: "200px" }} onClick={handleClose}>
                 取消
               </Button>
-              <Button sx={{ width: "200px" }}>確認新增</Button>
+              <Button
+                sx={{ width: "200px" }}
+                onClick={async () => {
+                  handleSubmit();
+                }}
+              >
+                確認新增
+              </Button>
             </Stack>
           </Box>
         </Box>
@@ -109,11 +147,23 @@ export default function NavigateModal({ open, setOpen }) {
 }
 
 // Search Bar
-function SearchInput() {
+function SearchInput({ setData, setAuthorList }) {
   const [input, setInput] = useState("");
 
   const handleInput = (e) => {
     setInput(e.target.value);
+  };
+
+  const handleClick = async () => {
+    const response = await searchEpisodes({ input });
+    if (response !== undefined) {
+      const ids = response.map((obj) => {
+        return obj.id;
+      });
+      const authors = await GetAuthors(ids);
+      setAuthorList(authors);
+      setData(response);
+    }
   };
 
   return (
@@ -126,7 +176,7 @@ function SearchInput() {
       />
       <button
         onClick={async () => {
-          searchEpisodes();
+          handleClick();
         }}
         style={{ height: "50px" }}
       >
@@ -136,13 +186,18 @@ function SearchInput() {
   );
 }
 
-function SearchResult() {
+function SearchResult({ data, authorList, card, setCard }) {
   return (
     <>
       <Typography>搜尋結果</Typography>
       <Box>
         <HideOnScroll>
-          <PodcastCardCollection />
+          <PodcastCardCollection
+            data={data}
+            authorList={authorList}
+            card={card}
+            setCard={setCard}
+          />
         </HideOnScroll>
       </Box>
     </>

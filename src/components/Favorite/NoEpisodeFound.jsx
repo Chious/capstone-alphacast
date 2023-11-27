@@ -16,7 +16,7 @@ export default function NoEpisodeFound() {
       <Stack width="100%" alignItems="center" spacing={1}>
         <Image src={folder} duration={0} width="50px" height="50px" />
         <h1>您尚未收藏任何Podcast!</h1>
-        <button onClick={setOpen}>點擊新增</button>
+        <button onClick={handleOpen}>點擊新增</button>
       </Stack>
 
       <NavigateModal open={open} setOpen={setOpen} />
