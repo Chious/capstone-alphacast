@@ -85,7 +85,14 @@ export const GetCategory = async () => {
     },
   };
 
-  axios.get(uri, config);
+  const response = await axios
+    .get(uri, config)
+    .then((data) => {
+      return data.data.categories;
+    })
+    .catch((err) => console.log(err));
+
+  return response;
 };
 
 export const AddCategory = async ({ bookmark }) => {
@@ -102,5 +109,12 @@ export const AddCategory = async ({ bookmark }) => {
     name: bookmark,
   };
 
-  axios.post(uri, config, bodyParameters);
+  const response = await axios
+    .post(uri, bodyParameters, config)
+    .then((res) => {
+      return "success";
+    })
+    .catch((err) => console.log(err));
+
+  return response;
 };

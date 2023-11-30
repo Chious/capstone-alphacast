@@ -13,6 +13,8 @@ const defaultAppContext = {
   GetUser: null,
   user: null,
   CreateAccount: null,
+  bookmark: null,
+  setBookmark: null,
 };
 
 const AppContext = createContext(defaultAppContext);
@@ -20,6 +22,7 @@ const AppContext = createContext(defaultAppContext);
 export const useApp = () => useContext(AppContext);
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [bookmark, setBookmark] = useState([]);
   const [bookmarkData, setBookmarkData] = useState(bookmarkdata);
   const [editBookmark, setEditBookmark] = useState({
     target: null,
@@ -48,6 +51,8 @@ export const AppProvider = ({ children }) => {
         CreateAccount: async () => {
           await CreateAccount();
         },
+        bookmark,
+        setBookmark,
       }}
     >
       {children}

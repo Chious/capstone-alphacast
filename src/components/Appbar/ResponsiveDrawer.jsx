@@ -6,18 +6,13 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import logo from "../../assets/logo.svg";
 import Image from "mui-image";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import AccountMenu from "./AccountMenu";
-import { ListItemButton, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { BookmarkItem } from "./BookmarkItem/BookmarkItem";
 import { useApp } from "../../contexts/AppContext";
 import DeleteModal from "../Modal/DeleteModal";
@@ -35,7 +30,30 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const { bookmarkData } = useApp();
+  const { bookmark } = useApp();
+
+  const SideMenu = () => {
+    const basic = [
+      { title: "📚Podcast", id: -1 },
+      { title: "📚Favirite", id: -2 },
+    ];
+
+    return (
+      <>
+        <List>
+          {basic.map((bookmark, index) => (
+            <BookmarkItem name={bookmark.title} id={bookmark.id} key={index} />
+          ))}
+          {bookmark.map((bookmark, index) => (
+            <BookmarkItem name={bookmark.name} id={bookmark.id} key={index} />
+          ))}
+        </List>
+        <Stack width="100%" alignItems="center" justifyContent="center">
+          <AddNewButton />
+        </Stack>
+      </>
+    );
+  };
 
   const drawer = (
     <div>
@@ -43,26 +61,7 @@ function ResponsiveDrawer(props) {
         <Image src={logo} height="20%" width="80%" fit="contain" duration={0} />
       </Toolbar>
       <Divider />
-      <List>
-        {["Podcast", "我的最愛"].map((text, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon edge="start" aria-label="emoji">
-                <EmojiEmotionsIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-              <IconButton aria-label="more" id="long-button">
-                <MoreVertIcon />
-              </IconButton>
-            </ListItemButton>
-          </ListItem>
-        ))}
-        <Divider />
-        <AddNewButton />
-        {bookmarkData.map((bookmark, index) => (
-          <BookmarkItem name={bookmark.title} id={bookmark.id} key={index} />
-        ))}
-      </List>
+      <SideMenu />
     </div>
   );
 

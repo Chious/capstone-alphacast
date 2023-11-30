@@ -1,24 +1,27 @@
 import ResponsiveDrawer from "../components/Appbar/ResponsiveDrawer";
 import { Grid, Box, styled } from "@mui/material";
-import { PodcastCardCollection } from "../components/PodcastCard";
 import NowPlaying from "../components/NowPlaying";
+import { BookmarkCardCollection } from "../components/BookmarkCard";
+import { BookmarkProvider } from "../contexts/BookmarkContext";
 
 export default function BookmarkPage() {
   return (
-    <ResponsiveDrawer>
-      <Grid container direction="row" spacing={2}>
-        <Grid item lg={9}>
-          <HideOnScroll>
-            <Box>
-              <PodcastCardCollection />
-            </Box>
-          </HideOnScroll>
+    <BookmarkProvider>
+      <ResponsiveDrawer>
+        <Grid container direction="row" spacing={2}>
+          <Grid item lg={9}>
+            <HideOnScroll>
+              <Box>
+                <BookmarkCardCollection />
+              </Box>
+            </HideOnScroll>
+          </Grid>
+          <Grid item lg={3}>
+            <NowPlaying />
+          </Grid>
         </Grid>
-        <Grid item lg={3}>
-          <NowPlaying />
-        </Grid>
-      </Grid>
-    </ResponsiveDrawer>
+      </ResponsiveDrawer>
+    </BookmarkProvider>
   );
 }
 

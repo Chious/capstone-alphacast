@@ -3,6 +3,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import NavigateModal from "./Modal/NavigateModal";
 import EmojiPicker from "emoji-picker-react";
 import EditModal from "./Modal/EditModal";
+import { GetCategory } from "../api/acAPI";
 
 export default function NowPlaying() {
   return (
@@ -25,7 +26,13 @@ export default function NowPlaying() {
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
       ></iframe>
-      <EditModal />
+      <button
+        onClick={async () => {
+          GetCategory();
+        }}
+      >
+        Test
+      </button>
     </Card>
   );
 }

@@ -8,19 +8,8 @@ import Favorite from "./pages/Favorite";
 import BookmarkPage from "./pages/BookmarkPage";
 import MUIthemeProvider from "./styles/themeProvider";
 import { AppProvider } from "./contexts/AppContext";
-import bookmarkData from "./data/bookmark.json";
 
 function App() {
-  const routes = bookmarkData.map((bookmark) => {
-    return (
-      <Route
-        path={`me/${bookmark.id}`}
-        element={<BookmarkPage />}
-        key={bookmark.id}
-      />
-    );
-  });
-
   return (
     <>
       <div className="app">
@@ -33,7 +22,7 @@ function App() {
                 <Route path="login" element={<Login />} />
                 <Route path="podcast" element={<Podcast />} />
                 <Route path="favorite" element={<Favorite />} />
-                {routes}
+                <Route path="bookmark/:id" element={<BookmarkPage />} />
               </Routes>
             </BrowserRouter>
           </MUIthemeProvider>

@@ -2,12 +2,21 @@ import ResponsiveDrawer from "../components/Appbar/ResponsiveDrawer";
 import NowPlaying from "../components/NowPlaying";
 import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
-import { SongCardCollection } from "../components/SongCard";
 import "./Favorite.scss";
 import { styled } from "@mui/material/styles";
 import NoEpisodeFound from "../components/Favorite/NoEpisodeFound";
+import { useApp } from "../contexts/AppContext";
+import { useEffect } from "react";
+import { GetCategory } from "../api/acAPI";
 
 export default function Favorite() {
+  const { setBookmark } = useApp();
+
+  useEffect(async () => {
+    const response = await GetCategory();
+    setBookmark(response);
+  }, []);
+
   return (
     <ResponsiveDrawer>
       <Grid container direction="row" spacing={2}>

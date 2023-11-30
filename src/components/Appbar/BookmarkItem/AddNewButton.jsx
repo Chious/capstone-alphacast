@@ -2,10 +2,14 @@ import { Button } from "@mui/material";
 import { useApp } from "../../../contexts/AppContext";
 
 export default function AddNewButton() {
-  const { setEditBookmark, editBookdark } = useApp();
+  const { setEditBookmark, editBookmark } = useApp();
   const handleCreate = () => {
-    setEditBookmark({ ...editBookdark, edit: "create" });
+    setEditBookmark({ ...editBookmark, edit: "create" });
   };
 
-  return <Button onClick={handleCreate}>新增分類</Button>;
+  return (
+    <Button onClick={handleCreate} sx={{ width: "150px" }}>
+      新增分類
+    </Button>
+  );
 }

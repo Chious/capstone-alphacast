@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IconButton, Typography } from "@mui/material";
 import EmojiPicker from "emoji-picker-react";
 
-export default function EmojiMenu({ handleEmoji }) {
+export default function EmojiMenu({ handleEmoji, init }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -12,7 +12,7 @@ export default function EmojiMenu({ handleEmoji }) {
 
   //Set up emoji icon
 
-  const [inputStr, setInputStr] = useState("📚");
+  const [inputStr, setInputStr] = useState(init);
   const onEmojiClick = (emoji) => {
     setInputStr(emoji.emoji);
     setOpen(false);

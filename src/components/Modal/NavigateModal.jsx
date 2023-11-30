@@ -12,7 +12,7 @@ import { styled } from "@mui/material/styles";
 
 // CircularProgress
 import CircularProgress from "@mui/material/CircularProgress";
-import { PodcastCardCollection } from "../PodcastCard";
+import { PodcastCardCollection } from "../SearchCard";
 
 // useContext
 import { useApp } from "../../contexts/AppContext";
@@ -85,7 +85,7 @@ export default function NavigateModal({ open, setOpen }) {
       const { id } = card; //Episode ID
       console.log("id: ", id);
 
-      const res = PostFavorite(id); // post id to favorite
+      const res = await PostFavorite(id); // post id to favorite
       if (res === "success") {
         console.log("success!");
         handleClose(); // Close the modal

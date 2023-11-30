@@ -1,20 +1,30 @@
 import NowPlaying from "../components/NowPlaying";
-import { PodcastCardCollection } from "../components/PodcastCard";
+import NoEpisodeFound from "../components/Favorite/NoEpisodeFound";
 import ResponsiveDrawer from "../components/Appbar/ResponsiveDrawer";
-import { Card, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { useEffect } from "react";
+import { useApp } from "../contexts/AppContext";
 
 import "./Podcast.scss";
+import { GetCategory } from "../api/acAPI";
 
 export default function Podcast() {
+  const { setBookmark } = useApp();
+
+  useEffect(async () => {
+    const response = await GetCategory();
+    setBookmark(response);
+  }, []);
+
   return (
     <ResponsiveDrawer>
       <Grid container direction="row" spacing={2}>
         <Grid item lg={9}>
           <HideOnScroll>
             <Box>
-              <PodcastCardCollection />
+              <NoEpisodeFound />
             </Box>
           </HideOnScroll>
         </Grid>

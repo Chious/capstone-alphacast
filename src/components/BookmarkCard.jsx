@@ -1,33 +1,24 @@
 import { Card, Grid, IconButton, Stack } from "@mui/material";
 import data from "../data/songs.json";
 import Image from "mui-image";
-import imgFolder from "../assets/favorite-empty-folder.svg";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useBookmark } from "../contexts/BookmarkContext";
 
-export const SongNoFound = () => {
-  return (
-    <Card
-      sx={{
-        width: "100%",
-        height: "100%",
-        shadows: 0,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Image src={imgFolder} duration={0} height="30px" width="30px" />
-      <h2>您尚未加入任何 Podcast，可以點擊按鈕新增！</h2>
-      <button>新增Podcast</button>
-    </Card>
-  );
-};
+export const BookmarkCard = ({ data }) => {
+  const { id, title, description, imgSrc, date, videoLength } = data;
 
-export const SongCard = ({ data }) => {
-  const { title, description, imgSrc, date, videoLength } = data;
+  const { pickedCard, setPickedCard } = useBookmark();
+  //If button clicked, select the card
+  const handlePlayClick = () => {
+    setPickedCard(id);
+  };
+
+  //If selected, change borderColor
+  const selectStyle =
+    id === pickedCard
+      ? { border: "1px solid #FF7F50" }
+      : { border: "1px solid transparent" };
 
   return (
     <Grid item xs={12}>
@@ -40,6 +31,7 @@ export const SongCard = ({ data }) => {
           p: 2,
           width: "100%",
         }}
+        style={selectStyle}
       >
         <Grid container direction="row" spacing={1}>
           <Grid item lg={2}>
@@ -57,14 +49,32 @@ export const SongCard = ({ data }) => {
                 direction="row"
                 justifyContent="space-between"
               >
-                <p className="song-card-title">{title}</p>
+                <p
+                  className="song-card-title"
+                  style={{
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {title}
+                </p>
                 <IconButton>
                   <BookmarkIcon />
                 </IconButton>
               </Stack>
-              <p className="song-card-author">{description}</p>
+              <p
+                className="song-card-author"
+                style={{
+                  height: "50px",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                }}
+              >
+                {description}
+              </p>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton>
+                <IconButton onClick={handlePlayClick}>
                   <PlayCircleIcon className="song-card-play-btn" />
                 </IconButton>
 
@@ -80,14 +90,14 @@ export const SongCard = ({ data }) => {
   );
 };
 
-export const SongCardCollection = () => {
-  const songcards = data.map((item, index) => {
-    return <SongCard data={item} key={index} />;
+export const BookmarkCardCollection = () => {
+  const BookmarkCards = data.map((item, index) => {
+    return <BookmarkCard data={item} key={index} />;
   });
 
   return (
     <Grid container className="song-collection-container" spacing={2}>
-      {songcards}
+      {BookmarkCards}
     </Grid>
   );
 };
