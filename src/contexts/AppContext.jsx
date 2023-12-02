@@ -15,6 +15,8 @@ const defaultAppContext = {
   CreateAccount: null,
   bookmark: null,
   setBookmark: null,
+  nowPlayInfo: null,
+  setNowPlayInfo: () => {},
 };
 
 const AppContext = createContext(defaultAppContext);
@@ -29,6 +31,11 @@ export const AppProvider = ({ children }) => {
     edit: null,
     doublecheck: null,
     count: 1000000,
+  });
+  const [nowPlayInfo, setNowPlayInfo] = useState({
+    id: null,
+    title: null,
+    description: null,
   });
 
   return (
@@ -53,6 +60,8 @@ export const AppProvider = ({ children }) => {
         },
         bookmark,
         setBookmark,
+        nowPlayInfo,
+        setNowPlayInfo,
       }}
     >
       {children}

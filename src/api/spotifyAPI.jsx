@@ -12,7 +12,7 @@ curl --request GET \
 */
 
 export const searchEpisodes = async ({ input }) => {
-  const url = import.meta.env.VITE_SPOTIFY_BASE_URL + "v1/search";
+  const url = baseUri + "v1/search";
   const spotifyToken = localStorage.getItem("spotifyToken");
   const params = {
     q: input,
@@ -38,13 +38,54 @@ export const searchEpisodes = async ({ input }) => {
   }
 };
 
+//2. Search Episode Detail
+export const searchEpisodeDetail = async (ids) => {
+  const url = `${baseUri}v1/episodes`;
+
+  const idsString = ids.join(",");
+  const spotifyToken = localStorage.getItem("spotifyToken");
+  const params = { ids: idsString };
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + spotifyToken,
+    },
+    params,
+  };
+
+  const response = axios
+    .get(url, config)
+    .then((data) => {
+      const rawData = data.data.episodes;
+      const episodeInfo = rawData.map((item) => {
+        const { id, name, description, duration_ms, images, release_date } =
+          item;
+        const newObject = {
+          id: id,
+          title: name,
+          description: description,
+          videoLength: duration_ms,
+          date: release_date,
+          imgSrc: images[0]["url"],
+        };
+
+        return newObject;
+      });
+
+      return episodeInfo;
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
+
 //2. Search for Author name
 
 export const GetAuthors = async (ids) => {
   /*const ids = ["1766nrskjXkwFHqG45trIP", "1MPUx6gvgr4WK4Ax7He24q"];*/
   const idsString = ids.join(",");
 
-  const url = import.meta.env.VITE_SPOTIFY_BASE_URL + "v1/episodes";
+  const url = baseUri + "v1/episodes";
   const spotifyToken = localStorage.getItem("spotifyToken");
   const params = { ids: idsString };
 

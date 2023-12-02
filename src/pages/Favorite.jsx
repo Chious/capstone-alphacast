@@ -6,32 +6,57 @@ import "./Favorite.scss";
 import { styled } from "@mui/material/styles";
 import NoEpisodeFound from "../components/Favorite/NoEpisodeFound";
 import { useApp } from "../contexts/AppContext";
-import { useEffect } from "react";
-import { GetCategory } from "../api/acAPI";
+import { useEffect, useState } from "react";
+import { GetCategory, GetFavoriteIds } from "../api/acAPI";
+import { FavoriteCardCollection } from "../components/Favorite/FavoriteCardCollection";
+import { FavoriteProvider } from "../contexts/FavoriteContext";
+import { searchEpisodeDetail, searchEpisodes } from "../api/spotifyAPI";
 
 export default function Favorite() {
   const { setBookmark } = useApp();
 
+  const [savedShows, setSavedShows] = useState([]);
+  const [fetchShows, setFetchShows] = useState([]);
+
+  const isShowCardCollection =
+    savedShows.length !== 0 ? (
+      <FavoriteCardCollection data={fetchShows} />
+    ) : (
+      <NoEpisodeFound />
+    );
+
   useEffect(async () => {
-    const response = await GetCategory();
-    setBookmark(response);
+    // Initialize Bookmark
+    const fetchBookmark = await GetCategory();
+    setBookmark(fetchBookmark);
+
+    // Initialize Episodes
+    const fetchEpisode = await GetFavoriteIds();
+    const episodes = fetchEpisode.map((item) => item.id);
+
+    if (episodes) {
+      setSavedShows(episodes);
+
+      const fetchEpisodeDetail = await searchEpisodeDetail(episodes);
+      setFetchShows(fetchEpisodeDetail);
+    }
   }, []);
 
   return (
-    <ResponsiveDrawer>
-      <Grid container direction="row" spacing={2}>
-        <Grid item lg={9}>
-          <HideOnScroll>
-            <Box width="100%">
-              <NoEpisodeFound />
-            </Box>
-          </HideOnScroll>
+    <FavoriteProvider>
+      <ResponsiveDrawer>
+        <Grid container direction="row" spacing={2}>
+          <Grid item lg={9}>
+            <HideOnScroll>
+              <Box width="100%">{isShowCardCollection}</Box>
+            </HideOnScroll>
+          </Grid>
+          <Grid item lg={3}>
+            <NowPlaying />
+          </Grid>
         </Grid>
-        <Grid item lg={3}>
-          <NowPlaying />
-        </Grid>
-      </Grid>
-    </ResponsiveDrawer>
+      </ResponsiveDrawer>
+    </FavoriteProvider>
   );
 }
 

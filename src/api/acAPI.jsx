@@ -2,17 +2,24 @@ import axios from "axios";
 
 const baseUri = import.meta.env.VITE_AC_API_BASE_URL;
 
-export const GetUserInfo = async () => {
+export const GetFavoriteIds = async () => {
+  const url = `${baseUri}api/me`;
+  const acToken = localStorage.getItem("acToken");
+
   const config = {
     headers: {
-      Authorization: "Bearer " + acToken,
+      Authorization: `Bearer ${acToken}`,
     },
   };
 
-  axios
-    .get(baseUri, config)
-    .then((data) => console.log(data))
+  const response = await axios
+    .get(url, config)
+    .then((data) => {
+      return data.data.favoriteEpisodeIds;
+    })
     .catch((err) => console.log(err));
+
+  return response;
 };
 
 export const CreateAccount = async () => {

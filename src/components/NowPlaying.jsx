@@ -1,38 +1,63 @@
 import { Card, Divider, Stack } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import NavigateModal from "./Modal/NavigateModal";
-import EmojiPicker from "emoji-picker-react";
-import EditModal from "./Modal/EditModal";
-import { GetCategory } from "../api/acAPI";
+import { useApp } from "../contexts/AppContext";
 
 export default function NowPlaying() {
+  const { nowPlayInfo } = useApp();
+  const { id, title, description } = nowPlayInfo;
+
+  const PlayingModal = ({ id }) => {
+    return (
+      <iframe
+        style={{ borderRadius: "12px" }}
+        src={`https://open.spotify.com/embed/episode/${id}?si=${id}`}
+        width="90%"
+        height="370"
+        frameBorder="0"
+        allowFullScreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      ></iframe>
+    );
+  };
+
+  const isShowIframe = id !== null && <PlayingModal id={id} />;
+
+  const episodeID = "27AcQgmQndtB4fRreclCII";
+
   return (
-    <Card className="podcast-now-playing" sx={{ p: 1 }}>
+    <Card className="podcast-now-playing" sx={{ p: 1, width: "100%" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <h1>正在播放</h1>
         <BookmarkBorderIcon />
       </Stack>
 
       <Divider />
-      <p>EP9慢跑練身，卜卦練心</p>
-      <p>本週的快樂Tips一定要去用用看！好玩</p>
-      <iframe
-        style={{ borderRadius: "12px" }}
-        src="https://open.spotify.com/embed/show/1D41msc4U5N1NIxCYlZw24?utm_source=generator"
-        width="100%"
-        height="130"
-        frameBorder="0"
-        allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-      ></iframe>
-      <button
-        onClick={async () => {
-          GetCategory();
-        }}
-      >
-        Test
-      </button>
+      <Stack direction="column" alignItems="center" spacing={1}>
+        <p
+          style={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "pre-wrap",
+            width: "100%",
+            height: "50px",
+          }}
+        >
+          {title}
+        </p>
+        <p
+          style={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "pre-wrap",
+            width: "100%",
+            height: "70px",
+          }}
+        >
+          {description}
+        </p>
+        {isShowIframe}
+      </Stack>
     </Card>
   );
 }

@@ -1,6 +1,5 @@
 import { Box, Card, Grid } from "@mui/material";
 import Image from "mui-image";
-import { useState } from "react";
 
 export const PodcastCard = ({ data, card, setCard, author }) => {
   const { title, id, imgSrc } = data;

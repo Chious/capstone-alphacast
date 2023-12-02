@@ -34,8 +34,8 @@ function ResponsiveDrawer(props) {
 
   const SideMenu = () => {
     const basic = [
-      { title: "📚Podcast", id: -1 },
-      { title: "📚Favirite", id: -2 },
+      { title: "📚Podcast", id: "/podcast" },
+      { title: "📚Favirite", id: "/favorite" },
     ];
 
     return (
