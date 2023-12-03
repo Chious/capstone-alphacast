@@ -17,7 +17,6 @@ import { BookmarkItem } from "./BookmarkItem/BookmarkItem";
 import { useApp } from "../../contexts/AppContext";
 import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
-import NavigateModal from "../Modal/NavigateModal";
 import AddNewButton from "./BookmarkItem/AddNewButton";
 
 const drawerWidth = 240;
@@ -153,7 +152,6 @@ function ResponsiveDrawer(props) {
         {/* Apply Modal */}
         <DeleteModal />
         <EditModal />
-        <NavigateModal />
         {props.children}
       </Box>
     </Box>

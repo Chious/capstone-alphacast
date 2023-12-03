@@ -1,4 +1,4 @@
-import { Card, Divider, Stack } from "@mui/material";
+import { Button, Card, Divider, Stack } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useApp } from "../contexts/AppContext";
 
@@ -57,6 +57,7 @@ export default function NowPlaying() {
           {description}
         </p>
         {isShowIframe}
+        <Button>Testing</Button>
       </Stack>
     </Card>
   );

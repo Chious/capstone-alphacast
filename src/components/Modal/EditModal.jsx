@@ -7,6 +7,7 @@ import { Stack, IconButton } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useApp } from "../../contexts/AppContext";
 import EmojiMenu from "../Appbar/BookmarkItem/EmojiMenu";
+import { AddCategory, GetCategory } from "../../api/acAPI";
 
 const style = {
   position: "absolute",
@@ -38,8 +39,7 @@ const ButtonGroupstyle = {
 };
 
 export default function EditModal() {
-  const { editBookmark, setEditBookmark, bookmarkData, setBookmarkData } =
-    useApp();
+  const { editBookmark, setEditBookmark, bookmark, setBookmark } = useApp();
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -49,32 +49,12 @@ export default function EditModal() {
   };
 
   ///// Create New bookmark/////////
-  // Function to generate a unique random ID
-
-  const returnUniqueID = () => {
-    const data = bookmarkData;
-    const generateUniqueID = (existingIDs) => {
-      let newID;
-      do {
-        // Generate a random ID, e.g., between 1 and 1000
-        newID = Math.floor(Math.random() * 1000) + 1;
-      } while (existingIDs.includes(newID)); // Ensure it's unique
-
-      return newID;
-    };
-    // Get an array of existing IDs
-    const existingIDs = data.map((item) => item.id);
-
-    // Generate a unique ID
-    const uniqueID = generateUniqueID(existingIDs);
-    return uniqueID;
-  };
 
   let defaultInput = editBookmark.target
-    ? bookmarkData.find((bookmark) => bookmark.id === editBookmark.target)
+    ? bookmark.find((bookmark) => bookmark.id === editBookmark.target)
     : {
-        id: returnUniqueID(),
-        title: "我的Podcast",
+        id: "default",
+        title: "",
         emoji: "📚",
       };
 
@@ -84,28 +64,20 @@ export default function EditModal() {
   const handleEmoji = (emoji) => {
     setListenInput({ ...listenInput, emoji: emoji });
   };
-  const handleSubmit = () => {
-    const { target } = editBookmark;
+  const handleSubmit = async () => {
+    const { title, emoji } = listenInput;
+    console.log("defaultInput: ", `${emoji}${title}`);
 
-    if (target) {
-      const replaceBookmark = (target, listenInput) => {
-        const updatedBookmarks = bookmarkData.map((bookmark) => {
-          if (bookmark.id === target) {
-            return listenInput;
-          }
-          return bookmark;
-        });
+    if (title !== "") {
+      const bookmark = `${emoji}${title}`;
+      const response = await AddCategory({ bookmark });
 
-        setBookmarkData(updatedBookmarks);
-      };
-
-      replaceBookmark(target, listenInput);
-    } else {
-      setBookmarkData([...bookmarkData, listenInput]);
+      if (response === "success") {
+        const updatedBookmark = await GetCategory();
+        setBookmark(updatedBookmark);
+        setOpen(false);
+      }
     }
-
-    setOpen(false);
-    setEditBookmark({ ...editBookmark, edit: null, target: null });
   };
 
   // Open Modal while edit
@@ -143,10 +115,11 @@ export default function EditModal() {
             </IconButton>
           </Stack>
           <Stack id="modal-modal-description" sx={{ mt: 2 }} direction="row">
-            <EmojiMenu handleEmoji={handleEmoji} />
+            <EmojiMenu handleEmoji={handleEmoji} init={defaultInput.emoji} />
             <input
               type="text"
               value={listenInput.title}
+              placeholder="我的Podcast"
               onChange={handleInput}
               name="edit"
             />
@@ -156,7 +129,12 @@ export default function EditModal() {
               <Button sx={{ width: "200px" }} onClick={handleClose}>
                 取消
               </Button>
-              <Button sx={{ width: "200px" }} onClick={handleSubmit}>
+              <Button
+                sx={{ width: "200px" }}
+                onClick={async () => {
+                  handleSubmit();
+                }}
+              >
                 儲存
               </Button>
             </Stack>

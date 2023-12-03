@@ -17,7 +17,6 @@ export const searchEpisodes = async ({ input }) => {
   const params = {
     q: input,
     type: "episode",
-    market: "TW",
     limit: 15,
   };
 
@@ -79,8 +78,7 @@ export const searchEpisodeDetail = async (ids) => {
   return response;
 };
 
-//2. Search for Author name
-
+//3. Search for Author name
 export const GetAuthors = async (ids) => {
   /*const ids = ["1766nrskjXkwFHqG45trIP", "1MPUx6gvgr4WK4Ax7He24q"];*/
   const idsString = ids.join(",");
@@ -110,7 +108,75 @@ export const GetAuthors = async (ids) => {
   return response;
 };
 
-//3. Get User's Information
+// 4. Search Shows Info
+
+export const searchShows = async ({ input }) => {
+  const url = baseUri + "v1/search";
+  const spotifyToken = localStorage.getItem("spotifyToken");
+  const params = {
+    q: input,
+    type: "show",
+    limit: 15,
+  };
+
+  const config = {
+    headers: { Authorization: `Bearer ${spotifyToken}` },
+    params,
+  };
+
+  const response = await axios
+    .get(url, config)
+    .then((data) => {
+      console.log(data.data.shows);
+      return data.data.shows.items;
+    })
+    .catch((err) => console.log(err));
+
+  if (response !== undefined) {
+    return response;
+  }
+};
+
+//5. Get Show's detail
+
+export const searchShowDetail = async (ids) => {
+  const url = `${baseUri}v1/shows`;
+
+  const idsString = ids.join(",");
+  const spotifyToken = localStorage.getItem("spotifyToken");
+  const params = { ids: idsString };
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + spotifyToken,
+    },
+    params,
+  };
+
+  const response = axios
+    .get(url, config)
+    .then((data) => {
+      const rawData = data.data.shows;
+      const showInfo = rawData.map((item) => {
+        const { id, name, publisher, images } = item;
+        const newObject = {
+          id: id,
+          author: name,
+          publisher: publisher,
+          imgSrc: images[0]["url"],
+        };
+
+        return newObject;
+      });
+
+      return showInfo;
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
+
+//6. Get User's Information
 
 /*
 curl --request GET \

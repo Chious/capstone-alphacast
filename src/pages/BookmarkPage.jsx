@@ -1,20 +1,26 @@
 import ResponsiveDrawer from "../components/Appbar/ResponsiveDrawer";
 import { Grid, Box, styled } from "@mui/material";
 import NowPlaying from "../components/NowPlaying";
-import NoEpisodeFound from "../components/Favorite/NoEpisodeFound";
+import NoEpisodeFound from "../components/BookmarkPage/NoEpisodeFound";
 import { BookmarkProvider } from "../contexts/BookmarkContext";
 import { useParams } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { GetCategory } from "../api/acAPI";
 import { useEffect, useState } from "react";
-import { BookmarkCardCollection } from "../components/BookmarkCard";
+import { BookmarkCardCollection } from "../components/BookmarkPage/BookmarkCard";
+import { searchShowDetail } from "../api/spotifyAPI";
 
 export default function BookmarkPage() {
   //Get Saved Episodes
   const { id } = useParams();
   const [savedShows, setSavedShows] = useState([]);
+  const [savedShowsDetail, setSavedShowsDetail] = useState([]);
   const isShowCardCollection =
-    savedShows.length !== 0 ? <BookmarkCardCollection /> : <NoEpisodeFound />;
+    savedShows.length !== 0 ? (
+      <BookmarkCardCollection data={savedShowsDetail} />
+    ) : (
+      <NoEpisodeFound pageId={id} />
+    );
 
   const { setBookmark } = useApp();
   useEffect(async () => {
@@ -26,11 +32,23 @@ export default function BookmarkPage() {
 
     //Initialize Saved Episodes
     if (found) {
-      setSavedShows(found.savedShows);
+      const foundSavedShows = found.savedShows.map((item) => {
+        const { id } = item;
+        return id;
+      });
+      setSavedShows(foundSavedShows);
     } else {
       console.log("No Object Found");
     }
   }, []);
+
+  useEffect(async () => {
+    if (savedShows.length !== 0) {
+      // If savedShows is not null, search for detail
+      const response = await searchShowDetail(savedShows);
+      setSavedShowsDetail(response);
+    }
+  }, [savedShows]);
 
   return (
     <BookmarkProvider>

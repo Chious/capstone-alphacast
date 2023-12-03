@@ -125,3 +125,23 @@ export const AddCategory = async ({ bookmark }) => {
 
   return response;
 };
+
+export const addShowToCategory = async ({ categoryId, showId }) => {
+  const uri = baseUri + `api/categories/${categoryId}/shows`;
+  const acToken = localStorage.getItem("acToken");
+  const bodyParam = { showId: showId };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${acToken}`,
+    },
+  };
+
+  const response = await axios
+    .post(uri, bodyParam, config)
+    .then((res) => {
+      return "success";
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
