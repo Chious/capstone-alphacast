@@ -126,6 +126,48 @@ export const AddCategory = async ({ bookmark }) => {
   return response;
 };
 
+export const deleteCategory = async (categoriesId) => {
+  const uri = `${baseUri}api/categories/${categoriesId}`;
+  const acToken = localStorage.getItem("acToken");
+  const config = {
+    headers: {
+      Authorization: "Bearer " + acToken,
+    },
+  };
+
+  const response = await axios
+    .delete(uri, config)
+    .then(() => {
+      return "success";
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
+
+export const putCategory = async ({ categoriesId, name }) => {
+  const uri = `${baseUri}api/categories/${categoriesId}`;
+  const acToken = localStorage.getItem("acToken");
+  const config = {
+    headers: {
+      Authorization: "Bearer " + acToken,
+    },
+  };
+
+  const bodyParameters = {
+    name: name,
+  };
+
+  const response = await axios
+    .put(uri, bodyParameters, config)
+    .then(() => {
+      return "success";
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
+
 export const addShowToCategory = async ({ categoryId, showId }) => {
   const uri = baseUri + `api/categories/${categoryId}/shows`;
   const acToken = localStorage.getItem("acToken");

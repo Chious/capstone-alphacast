@@ -28,6 +28,7 @@ export default function Favorite() {
   useEffect(async () => {
     // Initialize Bookmark
     const fetchBookmark = await GetCategory();
+    console.log("fetchBookmark: ", fetchBookmark);
     setBookmark(fetchBookmark);
 
     // Initialize Episodes

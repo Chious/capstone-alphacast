@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Stack } from "@mui/material";
+import { Button, Card, Divider, IconButton, Stack } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useApp } from "../contexts/AppContext";
 
@@ -29,7 +29,9 @@ export default function NowPlaying() {
     <Card className="podcast-now-playing" sx={{ p: 1, width: "100%" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <h1>正在播放</h1>
-        <BookmarkBorderIcon />
+        <IconButton>
+          <BookmarkBorderIcon />
+        </IconButton>
       </Stack>
 
       <Divider />
@@ -57,7 +59,6 @@ export default function NowPlaying() {
           {description}
         </p>
         {isShowIframe}
-        <Button>Testing</Button>
       </Stack>
     </Card>
   );

@@ -1,9 +1,17 @@
-import { Grid, Typography, ListItemButton } from "@mui/material";
+import { Grid, Typography, ListItemButton, IconButton } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EmojiMenu from "./EmojiMenu";
 import MoreVertMenu from "./MoreVertMenu";
 import { useNavigate } from "react-router-dom";
 
-export const BookmarkItem = ({ name, id }) => {
+export const BookmarkItem = ({
+  name,
+  id,
+  moreVertPosition,
+  setMoreVertPosition,
+  editBookmark,
+  setEditBookmark,
+}) => {
   const emojiRegex = /^([^\x00-\x7F]+)/;
   const emoji = name.match(emojiRegex)[1];
   const title = name.slice(2);
@@ -15,6 +23,21 @@ export const BookmarkItem = ({ name, id }) => {
   } else {
     formatted = id;
   }
+
+  // Control Movert Menu
+  const { xPosition, yPosition } = moreVertPosition;
+  const handleOpen = (event) => {
+    const iconButtonPosition = event.target.getBoundingClientRect();
+    const { left, bottom } = iconButtonPosition;
+
+    if (xPosition === left && yPosition === bottom) {
+      setEditBookmark({ ...editBookmark, target: null });
+      setMoreVertPosition({ ...moreVertPosition, open: false });
+    } else {
+      setEditBookmark({ ...editBookmark, target: id, name: name });
+      setMoreVertPosition({ xPosition: left, yPosition: bottom, open: true });
+    }
+  };
 
   return (
     <ListItemButton
@@ -40,7 +63,16 @@ export const BookmarkItem = ({ name, id }) => {
           </Typography>
         </Grid>
         <Grid item lg={2.5}>
-          <MoreVertMenu name={name} id={id} />
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpen(e);
+            }}
+          >
+            <MoreVertIcon />
+          </IconButton>
         </Grid>
       </Grid>
     </ListItemButton>

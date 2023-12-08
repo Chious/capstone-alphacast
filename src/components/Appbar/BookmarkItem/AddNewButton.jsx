@@ -1,8 +1,6 @@
 import { Button } from "@mui/material";
-import { useApp } from "../../../contexts/AppContext";
 
-export default function AddNewButton() {
-  const { setEditBookmark, editBookmark } = useApp();
+export default function AddNewButton({ setEditBookmark, editBookmark }) {
   const handleCreate = () => {
     setEditBookmark({ ...editBookmark, edit: "create" });
   };

@@ -18,6 +18,7 @@ import { useApp } from "../../contexts/AppContext";
 import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
 import AddNewButton from "./BookmarkItem/AddNewButton";
+import MoreVertMenu from "./BookmarkItem/MoreVertMenu";
 
 const drawerWidth = 240;
 
@@ -30,25 +31,60 @@ function ResponsiveDrawer(props) {
   };
 
   const { bookmark } = useApp();
+  const [editBookmark, setEditBookmark] = React.useState({
+    target: null,
+    edit: null,
+    name: null,
+    doublecheck: null,
+  });
+
+  // Control Morevert Menu
+  const [moreVertPosition, setMoreVertPosition] = React.useState({
+    open: false,
+    xPosition: 0,
+    yPosition: 0,
+  });
 
   const SideMenu = () => {
-    const basic = [
-      { title: "📚Podcast", id: "/podcast" },
-      { title: "📚Favirite", id: "/favorite" },
-    ];
+    const basic = [{ title: "📚Favirite", id: "/favorite" }];
 
     return (
       <>
         <List>
           {basic.map((bookmark, index) => (
-            <BookmarkItem name={bookmark.title} id={bookmark.id} key={index} />
+            <BookmarkItem
+              name={bookmark.title}
+              id={bookmark.id}
+              key={index}
+              moreVertPosition={moreVertPosition}
+              setMoreVertPosition={setMoreVertPosition}
+              editBookmark={editBookmark}
+              setEditBookmark={setEditBookmark}
+            />
           ))}
           {bookmark.map((bookmark, index) => (
-            <BookmarkItem name={bookmark.name} id={bookmark.id} key={index} />
+            <BookmarkItem
+              name={bookmark.name}
+              id={bookmark.id}
+              key={index}
+              moreVertPosition={moreVertPosition}
+              setMoreVertPosition={setMoreVertPosition}
+              editBookmark={editBookmark}
+              setEditBookmark={setEditBookmark}
+            />
           ))}
         </List>
+        <MoreVertMenu
+          moreVertPosition={moreVertPosition}
+          setMoreVertPosition={setMoreVertPosition}
+          editBookmark={editBookmark}
+          setEditBookmark={setEditBookmark}
+        />
         <Stack width="100%" alignItems="center" justifyContent="center">
-          <AddNewButton />
+          <AddNewButton
+            editBookmark={editBookmark}
+            setEditBookmark={setEditBookmark}
+          />
         </Stack>
       </>
     );
@@ -150,8 +186,14 @@ function ResponsiveDrawer(props) {
       >
         <Toolbar />
         {/* Apply Modal */}
-        <DeleteModal />
-        <EditModal />
+        <DeleteModal
+          editBookmark={editBookmark}
+          setEditBookmark={setEditBookmark}
+        />
+        <EditModal
+          editBookmark={editBookmark}
+          setEditBookmark={setEditBookmark}
+        />
         {props.children}
       </Box>
     </Box>

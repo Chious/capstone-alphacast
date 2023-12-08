@@ -7,7 +7,7 @@ import { Stack, IconButton } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useApp } from "../../contexts/AppContext";
 import EmojiMenu from "../Appbar/BookmarkItem/EmojiMenu";
-import { AddCategory, GetCategory } from "../../api/acAPI";
+import { AddCategory, GetCategory, putCategory } from "../../api/acAPI";
 
 const style = {
   position: "absolute",
@@ -38,35 +38,51 @@ const ButtonGroupstyle = {
   borderRadius: "0px 0px 5px 5px",
 };
 
-export default function EditModal() {
-  const { editBookmark, setEditBookmark, bookmark, setBookmark } = useApp();
+export default function EditModal({ editBookmark, setEditBookmark }) {
+  const { bookmark, setBookmark } = useApp();
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setEditBookmark({ ...editBookmark, edit: null, target: null });
+    setEditBookmark({ ...editBookmark, edit: null, target: null, name: null });
   };
 
   ///// Create New bookmark/////////
 
-  let defaultInput = editBookmark.target
-    ? bookmark.find((bookmark) => bookmark.id === editBookmark.target)
-    : {
-        id: "default",
-        title: "",
-        emoji: "📚",
-      };
+  const [listenInput, setListenInput] = React.useState({
+    id: "default",
+    title: "",
+    emoji: "📚",
+  });
 
-  const [listenInput, setListenInput] = React.useState(defaultInput);
   const handleInput = (event) =>
     setListenInput({ ...listenInput, title: event.target.value });
   const handleEmoji = (emoji) => {
     setListenInput({ ...listenInput, emoji: emoji });
   };
-  const handleSubmit = async () => {
+
+  const handleRevise = async () => {
     const { title, emoji } = listenInput;
-    console.log("defaultInput: ", `${emoji}${title}`);
+
+    if (title !== "") {
+      const name = `${emoji}${title}`;
+      const response = await putCategory({
+        categoriesId: editBookmark.target,
+        name: name,
+      });
+
+      if (response === "success") {
+        const updatedBookmark = await GetCategory();
+        setBookmark(updatedBookmark);
+        setOpen(false);
+      }
+    }
+  };
+
+  const handleAdd = async () => {
+    console.log("handleAdd");
+    const { title, emoji } = listenInput;
 
     if (title !== "") {
       const bookmark = `${emoji}${title}`;
@@ -86,6 +102,27 @@ export default function EditModal() {
 
     if (target && edit === "edit") {
       handleOpen();
+
+      const getEmojiName = (obj) => {
+        // Match emoji at start
+        const emojiRegex = /^([^\x00-\x7F]+)/;
+        // Get emoji match
+        const emojiMatch = obj.match(emojiRegex);
+        // Get emoji
+        const emoji = emojiMatch[1];
+
+        // Get remaining string
+        const name = obj.slice(emoji.length);
+
+        return { emoji: emoji, title: name };
+      };
+      const targetNameAndEmoji = getEmojiName(editBookmark.name);
+
+      setListenInput({
+        id: editBookmark.target,
+        title: targetNameAndEmoji.title,
+        emoji: targetNameAndEmoji.emoji,
+      });
     }
 
     if (edit === "create") {
@@ -115,7 +152,7 @@ export default function EditModal() {
             </IconButton>
           </Stack>
           <Stack id="modal-modal-description" sx={{ mt: 2 }} direction="row">
-            <EmojiMenu handleEmoji={handleEmoji} init={defaultInput.emoji} />
+            <EmojiMenu handleEmoji={handleEmoji} init={listenInput.emoji} />
             <input
               type="text"
               value={listenInput.title}
@@ -132,7 +169,11 @@ export default function EditModal() {
               <Button
                 sx={{ width: "200px" }}
                 onClick={async () => {
-                  handleSubmit();
+                  if (editBookmark.edit === "edit") {
+                    handleRevise();
+                  } else if (editBookmark.edit === "create") {
+                    handleAdd();
+                  }
                 }}
               >
                 儲存

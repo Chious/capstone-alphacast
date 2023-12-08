@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import { Stack, IconButton } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useApp } from "../../contexts/AppContext";
+import { deleteCategory } from "../../api/acAPI";
 
 const style = {
   position: "absolute",
@@ -36,37 +37,58 @@ const ButtonGroupstyle = {
   borderRadius: "0px 0px 5px 5px",
 };
 
-export default function DeleteModal() {
-  const { editBookmark, setEditBookmark, bookmarkData, setBookmarkData } =
-    useApp();
+export default function DeleteModal({ editBookmark, setEditBookmark }) {
+  const { bookmark, setBookmark } = useApp();
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setEditBookmark({ ...editBookmark, edit: null, target: null });
+    setEditBookmark({ ...editBookmark, edit: null, target: null, name: null });
   };
 
-  const handleDelete = () => {
-    const result = bookmarkData.filter(
+  const handleDelete = async () => {
+    const result = bookmark.filter(
       (bookmark) => bookmark.id !== editBookmark.target
     );
-    setBookmarkData(result);
-    setOpen(false);
-    setEditBookmark({ ...editBookmark, edit: null, target: null });
+
+    //Reset Bookmark
+    setBookmark(result);
+    const response = await deleteCategory(editBookmark.target);
+    if (response === "success") {
+      setOpen(false);
+      setEditBookmark({
+        ...editBookmark,
+        edit: null,
+        target: null,
+        name: null,
+      });
+    }
   };
 
-  const deleteTarget = editBookmark.target
-    ? bookmarkData.find((bookmark) => bookmark.id === editBookmark.target)
+  const getEmojiName = (obj) => {
+    // Match emoji at start
+    const emojiRegex = /^([^\x00-\x7F]+)/;
+    // Get emoji match
+    const emojiMatch = obj.match(emojiRegex);
+    // Get emoji
+    const emoji = emojiMatch[1];
+
+    // Get remaining string
+    const name = obj.slice(emoji.length);
+
+    return { emoji: emoji, title: name };
+  };
+
+  const target = editBookmark.name
+    ? getEmojiName(editBookmark.name)
     : { emoji: "", title: "" };
 
   React.useEffect(() => {
-    const { target, edit } = editBookmark;
-
-    if (target && edit == "delete") {
-      handleOpen();
+    if (editBookmark.edit === "delete") {
+      console.log("target: ", editBookmark);
+      setOpen(true);
     }
-  }, [editBookmark.edit]);
+  }, [editBookmark]);
 
   return (
     <div>
@@ -90,14 +112,19 @@ export default function DeleteModal() {
             </IconButton>
           </Stack>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {`您確定要刪除${deleteTarget.emoji} ${deleteTarget.title} 嗎？`}
+            {`您確定要刪除 ${target.emoji} ${target.title} 嗎？`}
           </Typography>
           <Box sx={ButtonGroupstyle}>
             <Stack direction="row" justifyContent="end">
               <Button sx={{ width: "200px" }} onClick={handleClose}>
                 取消
               </Button>
-              <Button sx={{ width: "200px" }} onClick={handleDelete}>
+              <Button
+                sx={{ width: "200px" }}
+                onClick={async () => {
+                  handleDelete();
+                }}
+              >
                 確認刪除
               </Button>
             </Stack>
