@@ -9,15 +9,24 @@ import { GetCategory } from "../api/acAPI";
 import { useEffect, useState } from "react";
 import { BookmarkCardCollection } from "../components/BookmarkPage/BookmarkCard";
 import { searchShowDetail } from "../api/spotifyAPI";
+import ShowSeriesModal from "../components/Modal/ShowSeriesModal";
 
 export default function BookmarkPage() {
   //Get Saved Episodes
   const { id } = useParams();
   const [savedShows, setSavedShows] = useState([]);
   const [savedShowsDetail, setSavedShowsDetail] = useState([]);
+
+  // open the seacrh modal
+  const [open, setOpen] = useState(false);
+  const [showId, setShowId] = useState(null);
   const isShowCardCollection =
     savedShows.length !== 0 ? (
-      <BookmarkCardCollection data={savedShowsDetail} />
+      <BookmarkCardCollection
+        data={savedShowsDetail}
+        setOpen={setOpen}
+        setShowId={setShowId}
+      />
     ) : (
       <NoEpisodeFound pageId={id} />
     );
@@ -63,6 +72,7 @@ export default function BookmarkPage() {
             <NowPlaying />
           </Grid>
         </Grid>
+        <ShowSeriesModal open={open} setOpen={setOpen} showId={showId} />
       </ResponsiveDrawer>
     </BookmarkProvider>
   );

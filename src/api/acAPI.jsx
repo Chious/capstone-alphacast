@@ -40,7 +40,7 @@ export const CreateAccount = async () => {
 };
 
 export const RemoveFavorite = async ({ episode }) => {
-  const uri = baseUri + "apisodes/" + episode;
+  const uri = baseUri + "api/episodes/" + episode;
   const acToken = localStorage.getItem("acToken");
 
   const config = {
@@ -49,7 +49,13 @@ export const RemoveFavorite = async ({ episode }) => {
     },
   };
 
-  axios.delete(uri, config);
+  const response = axios
+    .delete(uri, config)
+    .then(() => {
+      return "success";
+    })
+    .catch((err) => console.log(err));
+  return response;
 };
 
 export const PostFavorite = async (episode) => {

@@ -1,37 +1,22 @@
-import { Button, Card, Divider, IconButton, Stack } from "@mui/material";
+import { Card, Divider, IconButton, Stack } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useApp } from "../contexts/AppContext";
+import ShowSeriesModal from "./Modal/ShowSeriesModal";
+import { useState, useEffect } from "react";
+import React from "react";
+
+import { PostFavorite, RemoveFavorite } from "../api/acAPI";
 
 export default function NowPlaying() {
   const { nowPlayInfo } = useApp();
   const { id, title, description } = nowPlayInfo;
 
-  const PlayingModal = ({ id }) => {
-    return (
-      <iframe
-        style={{ borderRadius: "12px" }}
-        src={`https://open.spotify.com/embed/episode/${id}?si=${id}`}
-        width="90%"
-        height="370"
-        frameBorder="0"
-        allowFullScreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-      ></iframe>
-    );
-  };
-
-  const isShowIframe = id !== null && <PlayingModal id={id} />;
-
-  const episodeID = "27AcQgmQndtB4fRreclCII";
-
   return (
     <Card className="podcast-now-playing" sx={{ p: 1, width: "100%" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <h1>正在播放</h1>
-        <IconButton>
-          <BookmarkBorderIcon />
-        </IconButton>
+        <SaveIconButton id={id} />
       </Stack>
 
       <Divider />
@@ -58,8 +43,82 @@ export default function NowPlaying() {
         >
           {description}
         </p>
-        {isShowIframe}
+        <PlayingModal id={id} />
       </Stack>
+      <ShowSeriesModal />
     </Card>
   );
 }
+
+const SaveIconButton = ({ id }) => {
+  const { savedFavorite, setSavedFavorite } = useApp();
+  const [save, setSave] = useState(false);
+
+  useEffect(() => {
+    if (savedFavorite.includes(id)) {
+      setSave(true);
+    }
+  }, []);
+
+  const handleSave = async () => {
+    if (savedFavorite.includes(id)) {
+      // if in savedFavorite, remove it
+      const response = await RemoveFavorite({ episode: id });
+
+      if (response === "success") {
+        const newFavorite = savedFavorite.filter((item) => item !== id);
+        setSavedFavorite(newFavorite);
+        setSave(!save);
+      }
+    } else {
+      // if not in savedFavorite, add it
+      const response = await PostFavorite({ episode: id });
+
+      if (response === "success") {
+        const newFavorite = [...savedFavorite, id];
+        setSavedFavorite(newFavorite);
+        setSave(!save);
+      }
+    }
+  };
+
+  if (save) {
+    return (
+      <IconButton
+        onClick={async () => {
+          handleSave();
+        }}
+      >
+        <BookmarkIcon />
+      </IconButton>
+    );
+  } else if (save === false) {
+    return (
+      <IconButton
+        onClick={async () => {
+          handleSave();
+        }}
+      >
+        <BookmarkBorderIcon />
+      </IconButton>
+    );
+  }
+};
+
+const PlayingModal = ({ id }) => {
+  if (id !== null) {
+    return (
+      <iframe
+        style={{ borderRadius: "12px" }}
+        src={`https://open.spotify.com/embed/episode/${id}?si=${id}`}
+        width="90%"
+        height="370"
+        allowFullScreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      ></iframe>
+    );
+  } else {
+    return <></>;
+  }
+};

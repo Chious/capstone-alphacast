@@ -13,7 +13,7 @@ import { FavoriteProvider } from "../contexts/FavoriteContext";
 import { searchEpisodeDetail, searchEpisodes } from "../api/spotifyAPI";
 
 export default function Favorite() {
-  const { setBookmark } = useApp();
+  const { setBookmark, setSavedFavorite } = useApp();
 
   const [savedShows, setSavedShows] = useState([]);
   const [fetchShows, setFetchShows] = useState([]);
@@ -28,12 +28,13 @@ export default function Favorite() {
   useEffect(async () => {
     // Initialize Bookmark
     const fetchBookmark = await GetCategory();
-    console.log("fetchBookmark: ", fetchBookmark);
     setBookmark(fetchBookmark);
 
     // Initialize Episodes
     const fetchEpisode = await GetFavoriteIds();
     const episodes = fetchEpisode.map((item) => item.id);
+
+    setSavedFavorite(episodes);
 
     if (episodes) {
       setSavedShows(episodes);
@@ -47,7 +48,7 @@ export default function Favorite() {
     <FavoriteProvider>
       <ResponsiveDrawer>
         <Grid container direction="row" spacing={2}>
-          <Grid item lg={9}>
+          <Grid item lg={9} sx={{ p: 0 }}>
             <HideOnScroll>
               <Box width="100%">{isShowCardCollection}</Box>
             </HideOnScroll>

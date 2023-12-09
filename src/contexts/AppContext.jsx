@@ -5,10 +5,6 @@ import { GetUser } from "../api/spotifyAPI";
 import { CreateAccount } from "../api/acAPI";
 
 const defaultAppContext = {
-  bookmarkData: [],
-  setBookmarkData: null,
-  editBookdark: null,
-  setEditBookmark: null,
   setAccessToken: null,
   GetUser: null,
   user: null,
@@ -17,6 +13,8 @@ const defaultAppContext = {
   setBookmark: null,
   nowPlayInfo: null,
   setNowPlayInfo: () => {},
+  savedFavorite: [],
+  setSavedFavorite: () => {},
 };
 
 const AppContext = createContext(defaultAppContext);
@@ -26,25 +24,18 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [bookmark, setBookmark] = useState([]);
   const [bookmarkData, setBookmarkData] = useState(bookmarkdata);
-  const [editBookmark, setEditBookmark] = useState({
-    target: null,
-    edit: null,
-    doublecheck: null,
-    count: 1000000,
-  });
   const [nowPlayInfo, setNowPlayInfo] = useState({
     id: null,
     title: null,
     description: null,
   });
+  const [savedFavorite, setSavedFavorite] = useState([]);
 
   return (
     <AppContext.Provider
       value={{
         bookmarkData,
         setBookmarkData,
-        editBookmark,
-        setEditBookmark,
         setAccessToken: async ({ code }) => {
           await GetAccessToken({ code });
         },
@@ -62,6 +53,8 @@ export const AppProvider = ({ children }) => {
         setBookmark,
         nowPlayInfo,
         setNowPlayInfo,
+        savedFavorite,
+        setSavedFavorite,
       }}
     >
       {children}

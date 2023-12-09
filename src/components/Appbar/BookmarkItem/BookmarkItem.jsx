@@ -1,7 +1,6 @@
 import { Grid, Typography, ListItemButton, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EmojiMenu from "./EmojiMenu";
-import MoreVertMenu from "./MoreVertMenu";
 import { useNavigate } from "react-router-dom";
 
 export const BookmarkItem = ({
@@ -19,7 +18,7 @@ export const BookmarkItem = ({
   const navigate = useNavigate();
   var formatted;
   if (id !== "/favorite" && id !== "/podcast") {
-    formatted = id.replace(/^\/?(\d+|(podcast|favorite))$/, "/bookmark/$1");
+    formatted = `/bookmark/${id}?id=${id}`;
   } else {
     formatted = id;
   }

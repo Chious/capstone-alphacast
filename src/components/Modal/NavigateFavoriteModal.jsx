@@ -14,9 +14,6 @@ import { styled } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import { PodcastCardCollection } from "../SearchCard";
 
-// useContext
-import { useApp } from "../../contexts/AppContext";
-
 // Spotify api
 import { searchEpisodes, GetAuthors } from "../../api/spotifyAPI";
 import { PostFavorite } from "../../api/acAPI";
@@ -51,21 +48,9 @@ const ButtonGroupstyle = {
 };
 
 export default function NavigateModal({ open, setOpen }) {
-  const { editBookmark, setEditBookmark } = useApp();
-
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setEditBookmark({ edit: null, target: null, doublecheck: null });
   };
-
-  useEffect(() => {
-    const { target, edit } = editBookmark;
-
-    if (target && edit === "navigate") {
-      handleOpen();
-    }
-  }, [editBookmark.edit]);
 
   //set Data from search result
   const [data, setData] = useState([]);

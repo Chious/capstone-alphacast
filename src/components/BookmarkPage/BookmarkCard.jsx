@@ -4,13 +4,18 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useBookmark } from "../../contexts/BookmarkContext";
 
-export const BookmarkCard = ({ data }) => {
+export const BookmarkCard = ({ data, setOpen, setShowId }) => {
   const { id, author, publisher, imgSrc } = data;
 
   const { pickedCard, setPickedCard } = useBookmark();
   //If button clicked, select the card
   const handlePlayClick = () => {
     setPickedCard(id);
+  };
+
+  const handleOpen = () => {
+    setShowId(id);
+    setOpen(true);
   };
 
   //If selected, change borderColor
@@ -61,16 +66,23 @@ export const BookmarkCard = ({ data }) => {
           >
             {publisher}
           </p>
-          <Button>更多</Button>
+          <Button onClick={handleOpen}>更多</Button>
         </Stack>
       </Card>
     </Grid>
   );
 };
 
-export const BookmarkCardCollection = ({ data }) => {
+export const BookmarkCardCollection = ({ data, setOpen, setShowId }) => {
   const BookmarkCards = data.map((item, index) => {
-    return <BookmarkCard data={item} key={index} />;
+    return (
+      <BookmarkCard
+        data={item}
+        key={index}
+        setOpen={setOpen}
+        setShowId={setShowId}
+      />
+    );
   });
 
   return (

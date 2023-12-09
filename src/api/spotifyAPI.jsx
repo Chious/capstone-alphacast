@@ -176,6 +176,43 @@ export const searchShowDetail = async (ids) => {
   return response;
 };
 
+//6. Get Show's Episode
+
+export const getShowEpisodes = async (id) => {
+  const url = `${baseUri}v1/shows/${id}/episodes?limit=10`;
+
+  const spotifyToken = localStorage.getItem("spotifyToken");
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + spotifyToken,
+    },
+  };
+
+  const response = axios
+    .get(url, config)
+    .then((data) => {
+      const rawData = data.data.items;
+      const filterData = rawData.map((item) => {
+        const { id, name, description, images, release_date, duration_ms } =
+          item;
+        return {
+          id: id,
+          title: name,
+          description: description,
+          imgSrc: images[0]["url"],
+          date: release_date,
+          videoLength: duration_ms,
+        };
+      });
+
+      return filterData;
+    })
+    .catch((err) => console.log(err));
+
+  return response;
+};
+
 //6. Get User's Information
 
 /*

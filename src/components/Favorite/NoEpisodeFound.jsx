@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import Image from "mui-image";
 import folder from "../../assets/favorite-empty-folder.svg";
-import NavigateModal from "../Modal/NavigateModal";
+import NavigateModal from "../Modal/NavigateFavoriteModal";
 import { useState } from "react";
 
 export default function NoEpisodeFound() {

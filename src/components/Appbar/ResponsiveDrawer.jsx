@@ -45,6 +45,8 @@ function ResponsiveDrawer(props) {
     yPosition: 0,
   });
 
+  const [openNavigateModal, setOpenNavigateModal] = React.useState(false);
+
   const SideMenu = () => {
     const basic = [{ title: "📚Favirite", id: "/favorite" }];
 
@@ -79,6 +81,8 @@ function ResponsiveDrawer(props) {
           setMoreVertPosition={setMoreVertPosition}
           editBookmark={editBookmark}
           setEditBookmark={setEditBookmark}
+          openNavigateModal={openNavigateModal}
+          setOpenNavigateModal={setOpenNavigateModal}
         />
         <Stack width="100%" alignItems="center" justifyContent="center">
           <AddNewButton

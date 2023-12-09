@@ -13,9 +13,6 @@ import { styled } from "@mui/material/styles";
 // CircularProgress
 import CircularProgress from "@mui/material/CircularProgress";
 
-// useContext
-import { useApp } from "../../contexts/AppContext";
-
 // Spotify api
 import { searchShows } from "../../api/spotifyAPI";
 import { addShowToCategory } from "../../api/acAPI";
@@ -51,21 +48,9 @@ const ButtonGroupstyle = {
 };
 
 export default function NavigateShowsModal({ open, setOpen, pageId }) {
-  const { editBookmark, setEditBookmark } = useApp();
-
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setEditBookmark({ edit: null, target: null, doublecheck: null });
   };
-
-  useEffect(() => {
-    const { target, edit } = editBookmark;
-
-    if (target && edit === "navigate") {
-      handleOpen();
-    }
-  }, [editBookmark.edit]);
 
   //set Data from search result
   const [data, setData] = useState([]);
@@ -140,7 +125,7 @@ export default function NavigateShowsModal({ open, setOpen, pageId }) {
 }
 
 // Search Bar
-function SearchInput({ setData, setAuthorList }) {
+function SearchInput({ setData }) {
   const [input, setInput] = useState("");
 
   const handleInput = (e) => {
