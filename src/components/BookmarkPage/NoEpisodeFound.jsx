@@ -13,12 +13,17 @@ export default function NoEpisodeFound({ pageId }) {
 
   return (
     <>
-      <Stack width="100%" alignItems="center" spacing={1}>
+      <Stack
+        width="100%"
+        height="100%"
+        alignItems="center"
+        justifyContent="center"
+        spacing={1}
+      >
         <Image src={folder} duration={0} width="50px" height="50px" />
         <h1>您尚未收藏任何Podcast!</h1>
         <button onClick={handleOpen}>點擊新增</button>
       </Stack>
-
       <NavigateShowsModal open={open} setOpen={setOpen} pageId={pageId} />
     </>
   );

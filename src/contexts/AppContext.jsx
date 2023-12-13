@@ -15,6 +15,8 @@ const defaultAppContext = {
   setNowPlayInfo: () => {},
   savedFavorite: [],
   setSavedFavorite: () => {},
+  isValid: null,
+  setIsValid: () => {},
 };
 
 const AppContext = createContext(defaultAppContext);
@@ -30,6 +32,7 @@ export const AppProvider = ({ children }) => {
     description: null,
   });
   const [savedFavorite, setSavedFavorite] = useState([]);
+  const [isValid, setIsValid] = useState(false);
 
   return (
     <AppContext.Provider
@@ -55,6 +58,8 @@ export const AppProvider = ({ children }) => {
         setNowPlayInfo,
         savedFavorite,
         setSavedFavorite,
+        isValid,
+        setIsValid,
       }}
     >
       {children}

@@ -39,7 +39,7 @@ export const CreateAccount = async () => {
     .catch((err) => console.log(err));
 };
 
-export const RemoveFavorite = async ({ episode }) => {
+export const RemoveFavorite = async (episode) => {
   const uri = baseUri + "api/episodes/" + episode;
   const acToken = localStorage.getItem("acToken");
 

@@ -91,7 +91,12 @@ export default function NavigateShowsModal({ open, setOpen, pageId }) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography id="modal-modal-title" variant="h6" component="h2">
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                fontWeight="500"
+              >
                 新增Poodcast
               </Typography>
               <IconButton onClick={handleClose}>

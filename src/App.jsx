@@ -23,6 +23,7 @@ function App() {
                 <Route path="podcast" element={<Podcast />} />
                 <Route path="favorite" element={<Favorite />} />
                 <Route path="bookmark/:id" element={<BookmarkPage />} />
+                <Route path="*" element={<Login />} />
               </Routes>
             </BrowserRouter>
           </MUIthemeProvider>

@@ -62,7 +62,12 @@ export default function BookmarkPage() {
   return (
     <BookmarkProvider>
       <ResponsiveDrawer>
-        <Grid container direction="row" spacing={2}>
+        <Grid
+          container
+          direction="row"
+          spacing={2}
+          sx={{ height: "100%", width: "100%" }}
+        >
           <Grid item lg={9}>
             <HideOnScroll>
               <Box>{isShowCardCollection}</Box>

@@ -127,7 +127,6 @@ export const searchShows = async ({ input }) => {
   const response = await axios
     .get(url, config)
     .then((data) => {
-      console.log(data.data.shows);
       return data.data.shows.items;
     })
     .catch((err) => console.log(err));
@@ -245,7 +244,6 @@ export const GetUser = async () => {
       return res;
     })
     .catch(async (err) => {
-      console.log(err);
       //If token is expired, refresh token
       if (err.error.status === 401) {
         await getRefreshToken();

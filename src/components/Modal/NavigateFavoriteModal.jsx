@@ -102,13 +102,15 @@ export default function NavigateModal({ open, setOpen }) {
             </Stack>
 
             <Divider />
-            <SearchInput setData={setData} setAuthorList={setAuthorList} />
-            <SearchResult
-              data={data}
-              authorList={authorList}
-              card={card}
-              setCard={setCard}
-            />
+            <Stack spacing={1}>
+              <SearchInput setData={setData} setAuthorList={setAuthorList} />
+              <SearchResult
+                data={data}
+                authorList={authorList}
+                card={card}
+                setCard={setCard}
+              />
+            </Stack>
           </Stack>
           <Box sx={ButtonGroupstyle}>
             <Stack direction="row" justifyContent="end">
@@ -139,34 +141,48 @@ function SearchInput({ setData, setAuthorList }) {
     setInput(e.target.value);
   };
 
-  const handleClick = async () => {
-    const response = await searchEpisodes({ input });
-    if (response !== undefined) {
-      const ids = response.map((obj) => {
-        return obj.id;
-      });
-      const authors = await GetAuthors(ids);
-      setAuthorList(authors);
-      setData(response);
+  const handleKeyPress = async (event) => {
+    if (event.key === "Enter") {
+      const response = await searchEpisodes({ input });
+      if (response !== undefined) {
+        const ids = response.map((obj) => {
+          return obj.id;
+        });
+        const authors = await GetAuthors(ids);
+        setAuthorList(authors);
+        setData(response);
+      }
     }
   };
 
   return (
-    <Stack direction="row" alignItems="center" spacing={1} width="100%">
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      width="100%"
+      sx={{
+        background: "#F5F5F5",
+        p: 1,
+        border: "1px solid transparent",
+        borderRadius: "5px",
+      }}
+    >
       <SearchIcon />
-      <TextField
-        placeholder="type something..."
+      <input
+        placeholder="開始搜尋..."
         onChange={handleInput}
-        sx={{ height: "50px", width: "80%" }}
-      />
-      <button
-        onClick={async () => {
-          handleClick();
+        style={{
+          color: "black",
+          height: "30px",
+          width: "90%",
+          background: "transparent",
+          border: "1px solid transparent",
         }}
-        style={{ height: "50px" }}
-      >
-        提交
-      </button>
+        onKeyDown={async (e) => {
+          handleKeyPress(e);
+        }}
+      />
     </Stack>
   );
 }

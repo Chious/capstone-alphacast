@@ -60,6 +60,7 @@ const FavoriteCard = ({ data }) => {
                     textOverflow: "ellipsis",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
+                    fontWeight: "500",
                   }}
                 >
                   {title}
@@ -72,6 +73,7 @@ const FavoriteCard = ({ data }) => {
                   height: "50px",
                   textOverflow: "ellipsis",
                   overflow: "hidden",
+                  color: "#93989A",
                 }}
               >
                 {description}
@@ -81,7 +83,7 @@ const FavoriteCard = ({ data }) => {
                   <PlayCircleIcon className="song-card-play-btn" />
                 </IconButton>
 
-                <p>
+                <p style={{ color: "#93989A" }}>
                   {date}・{formattedTime(videoLength)}
                 </p>
               </Stack>
@@ -122,7 +124,7 @@ const SaveIconButton = ({ id }) => {
   const handleSave = async () => {
     if (savedFavorite.includes(id)) {
       // if in savedFavorite, remove it
-      const response = await RemoveFavorite({ episode: id });
+      const response = await RemoveFavorite(id);
 
       if (response === "success") {
         const newFavorite = savedFavorite.filter((item) => item !== id);
@@ -131,7 +133,7 @@ const SaveIconButton = ({ id }) => {
       }
     } else {
       // if not in savedFavorite, add it
-      const response = await PostFavorite({ episode: id });
+      const response = await PostFavorite(id);
 
       if (response === "success") {
         const newFavorite = [...savedFavorite, id];

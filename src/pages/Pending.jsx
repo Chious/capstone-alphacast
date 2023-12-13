@@ -9,8 +9,9 @@ import { useEffect, useState, useRef } from "react";
 
 export default function Pending() {
   const location = useLocation();
-  const navigeate = useNavigate();
-  const { setAccessToken, GetUser, CreateAccount } = useApp();
+  const navigate = useNavigate();
+  const { setAccessToken, GetUser, CreateAccount, isValid, setIsValid } =
+    useApp();
   const acToken = localStorage.getItem("acToken");
 
   //1. Get Access token from Spotify and backend
@@ -22,17 +23,26 @@ export default function Pending() {
 
       setAccessToken({ code })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000))) //wait for second, after Spotify create token.
-        .then(GetUser())
-        .then(CreateAccount());
+        .then(() => {
+          GetUser();
+        })
+        .then(() => {
+          CreateAccount();
+        })
+        .then(() => new Promise((reslove) => setTimeout(reslove, 2000)))
+        .then(() => {
+          setIsValid(true);
+        })
+        .catch(setIsValid(false));
     }
   }, []);
 
   //2. If get token from backend, navigate to "/favorite"
   useEffect(() => {
-    if (acToken !== undefined && acToken) {
-      navigeate("/favorite");
+    if (isValid === true) {
+      navigate("/favorite");
     }
-  }, [acToken]);
+  }, [isValid]);
 
   return (
     <Stack

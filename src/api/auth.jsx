@@ -26,7 +26,19 @@ export const SpotifyLogin = () => {
 
   return (
     <>
-      <button onClick={handleLoginClick}>使用SPOTIFY帳號登入</button>
+      <button
+        style={{
+          width: "300px",
+          height: "50px",
+          color: "white",
+          background: "#1ED760",
+          border: "1px solid transparent",
+          borderRadius: "5px",
+        }}
+        onClick={handleLoginClick}
+      >
+        使用SPOTIFY帳號登入
+      </button>
     </>
   );
 };
@@ -54,6 +66,7 @@ export const GetAccessToken = async ({ code }) => {
     localStorage.setItem("refreshToken", data.refresh_token);
     return data;
   } catch (error) {
+    console.log(error);
     return error;
   }
 };

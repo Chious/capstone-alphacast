@@ -44,11 +44,14 @@ export const PodcastCard = ({ data, card, setCard, author }) => {
             whiteSpace: "nowrap",
             width: "100%",
             height: "24px",
+            fontWeight: "500",
           }}
         >
           {title}
         </p>
-        <p className="pocast-card-author">{author}</p>
+        <p className="pocast-card-author" style={{ color: "#93989A" }}>
+          {author}
+        </p>
       </Card>
     </Grid>
   );

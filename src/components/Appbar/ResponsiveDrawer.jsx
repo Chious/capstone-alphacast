@@ -50,6 +50,23 @@ function ResponsiveDrawer(props) {
   const SideMenu = () => {
     const basic = [{ title: "📚Favirite", id: "/favorite" }];
 
+    const bookmarkCards =
+      (bookmark.length !== 0) & (bookmark !== undefined) ? (
+        bookmark.map((bookmark, index) => (
+          <BookmarkItem
+            name={bookmark.name}
+            id={bookmark.id}
+            key={index}
+            moreVertPosition={moreVertPosition}
+            setMoreVertPosition={setMoreVertPosition}
+            editBookmark={editBookmark}
+            setEditBookmark={setEditBookmark}
+          />
+        ))
+      ) : (
+        <></>
+      );
+
     return (
       <>
         <List>
@@ -64,17 +81,7 @@ function ResponsiveDrawer(props) {
               setEditBookmark={setEditBookmark}
             />
           ))}
-          {bookmark.map((bookmark, index) => (
-            <BookmarkItem
-              name={bookmark.name}
-              id={bookmark.id}
-              key={index}
-              moreVertPosition={moreVertPosition}
-              setMoreVertPosition={setMoreVertPosition}
-              editBookmark={editBookmark}
-              setEditBookmark={setEditBookmark}
-            />
-          ))}
+          {bookmarkCards}
         </List>
         <MoreVertMenu
           moreVertPosition={moreVertPosition}
@@ -135,8 +142,8 @@ function ResponsiveDrawer(props) {
             width="100%"
             sx={{ p: 1 }}
           >
-            <Typography variant="h6" noWrap component="div">
-              早安！
+            <Typography variant="h6" noWrap component="div" fontWeight="900">
+              早安
             </Typography>
             <AccountMenu />
           </Stack>
@@ -185,10 +192,10 @@ function ResponsiveDrawer(props) {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: `calc(100vw - ${drawerWidth}px)`,
+          height: `calc(100vh - 70px)`,
         }}
       >
-        <Toolbar />
         {/* Apply Modal */}
         <DeleteModal
           editBookmark={editBookmark}

@@ -63,7 +63,8 @@ const SaveIconButton = ({ id }) => {
   const handleSave = async () => {
     if (savedFavorite.includes(id)) {
       // if in savedFavorite, remove it
-      const response = await RemoveFavorite({ episode: id });
+      console.log("remove id: ", id);
+      const response = await RemoveFavorite(id);
 
       if (response === "success") {
         const newFavorite = savedFavorite.filter((item) => item !== id);
@@ -72,7 +73,8 @@ const SaveIconButton = ({ id }) => {
       }
     } else {
       // if not in savedFavorite, add it
-      const response = await PostFavorite({ episode: id });
+      console.log("save id: ", id);
+      const response = await PostFavorite(id);
 
       if (response === "success") {
         const newFavorite = [...savedFavorite, id];

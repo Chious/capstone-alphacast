@@ -80,8 +80,12 @@ export default function IntroGallery() {
                   src={step.imgPath}
                   alt={step.label}
                 />
-                <Typography>{step.label}</Typography>
-                <Typography>{step.desc}</Typography>
+                <Stack alignItems="center" spacing={2}>
+                  <Typography sx={{ color: "white" }} variant="h4">
+                    {step.label}
+                  </Typography>
+                  <Typography sx={{ color: "white" }}>{step.desc}</Typography>
+                </Stack>
               </Stack>
             ) : null}
           </div>
