@@ -9,6 +9,7 @@ import { useEffect, useState, useRef } from "react";
 
 export default function Pending() {
   const location = useLocation();
+  console.log("location: ", location);
   const navigate = useNavigate();
   const { setAccessToken, GetUser, CreateAccount, isValid, setIsValid } =
     useApp();
@@ -19,18 +20,22 @@ export default function Pending() {
     const state = new URLSearchParams(location.search).get("state");
 
     if (location.pathname === "/pending" && state) {
+      console.log("useEffect: ");
       const code = new URLSearchParams(location.search).get("code");
 
       setAccessToken({ code })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000))) //wait for second, after Spotify create token.
         .then(() => {
+          console.log("get user");
           GetUser();
         })
         .then(() => {
+          console.log("create account");
           CreateAccount();
         })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000)))
         .then(() => {
+          console.log("set valid");
           setIsValid(true);
         })
         .catch(setIsValid(false));
