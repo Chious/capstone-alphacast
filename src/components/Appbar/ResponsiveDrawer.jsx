@@ -19,6 +19,7 @@ import DeleteModal from "../Modal/DeleteModal";
 import EditModal from "../Modal/EditModal";
 import AddNewButton from "./BookmarkItem/AddNewButton";
 import MoreVertMenu from "./BookmarkItem/MoreVertMenu";
+import SimpleSnackbar from "../Modal/SimpleSnackbar";
 
 const drawerWidth = 240;
 
@@ -103,7 +104,7 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <Toolbar>
+      <Toolbar sx={{ background: "#F6F7F8" }}>
         <Image src={logo} height="20%" width="80%" fit="contain" duration={0} />
       </Toolbar>
       <Divider />
@@ -113,6 +114,22 @@ function ResponsiveDrawer(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  //Greeting
+  const now = new Date();
+
+  const getGreeting = () => {
+    const hours = now.getHours();
+
+    if (hours >= 5 && hours <= 12) {
+      return "早安";
+    } else if (hours >= 12 && hours <= 17) {
+      return "午安";
+    } else if (hours >= 17 || hours <= 5) {
+      return "晚安";
+    }
+  };
+  const greeting = getGreeting();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -143,7 +160,7 @@ function ResponsiveDrawer(props) {
             sx={{ p: 1 }}
           >
             <Typography variant="h6" noWrap component="div" fontWeight="900">
-              早安
+              {greeting}
             </Typography>
             <AccountMenu />
           </Stack>
@@ -168,6 +185,8 @@ function ResponsiveDrawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              background: "#F6F7F8",
+              border: "1px solid transparent",
             },
           }}
         >
@@ -180,6 +199,8 @@ function ResponsiveDrawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              background: "#F6F7F8",
+              border: "1px solid transparent",
             },
           }}
           open
@@ -205,6 +226,7 @@ function ResponsiveDrawer(props) {
           editBookmark={editBookmark}
           setEditBookmark={setEditBookmark}
         />
+        <SimpleSnackbar />
         {props.children}
       </Box>
     </Box>

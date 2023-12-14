@@ -21,8 +21,8 @@ export default function NoEpisodeFound({ pageId }) {
         spacing={1}
       >
         <Image src={folder} duration={0} width="50px" height="50px" />
-        <h1>您尚未收藏任何Podcast!</h1>
-        <button onClick={handleOpen}>點擊新增</button>
+        <h1>您尚未加入任何節目，可以點擊下方按鈕新增！</h1>
+        <button onClick={handleOpen}>新增節目</button>
       </Stack>
       <NavigateShowsModal open={open} setOpen={setOpen} pageId={pageId} />
     </>

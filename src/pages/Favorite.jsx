@@ -50,12 +50,12 @@ export default function Favorite() {
     <FavoriteProvider>
       <ResponsiveDrawer>
         <Grid container direction="row" spacing={2}>
-          <Grid item lg={9} sx={{ p: 0 }}>
+          <Grid item lg={9} xs={9} sm={9} md={9} xl={9} sx={{ p: 0 }}>
             <HideOnScroll>
               <Box width="100%">{isShowCardCollection}</Box>
             </HideOnScroll>
           </Grid>
-          <Grid item lg={3}>
+          <Grid item lg={3} xs={3} sm={3} md={3} xl={3}>
             <NowPlaying />
           </Grid>
         </Grid>

@@ -16,6 +16,16 @@ import { useNavigate } from "react-router-dom";
 export default function AccountMenu() {
   //Get user info
   const { user } = useApp();
+  const { display_name, images } = user;
+  const imgsrc = images[0]["url"];
+
+  const avatar =
+    imgsrc !== undefined ? (
+      <Avatar sx={{ width: 32, height: 32 }} src={imgsrc} />
+    ) : (
+      <Avatar sx={{ width: 32, height: 32 }}>{display_name[0]}</Avatar>
+    );
+
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -56,8 +66,8 @@ export default function AccountMenu() {
                 p: 0.5,
               }}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>J</Avatar>
-              <Typography>Joe Biden</Typography>
+              {avatar}
+              <Typography>{display_name}</Typography>
               <KeyboardArrowDownIcon />
             </Stack>
           </IconButton>

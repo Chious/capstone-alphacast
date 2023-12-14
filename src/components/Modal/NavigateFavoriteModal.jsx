@@ -210,7 +210,7 @@ function HideOnScroll(props) {
   const { children } = props;
 
   const ScrollableBox = styled(Box)`
-    max-height: 300px; /* Set a maximum height to enable scrolling */
+    max-height: 230px; /* Set a maximum height to enable scrolling */
     overflow: auto; /* Enable the scrollbar when content overflows */
   `;
 

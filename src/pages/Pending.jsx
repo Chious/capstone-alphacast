@@ -6,12 +6,13 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../contexts/AppContext";
 import { useEffect, useState, useRef } from "react";
+import { GetUser } from "../api/spotifyAPI";
 
 export default function Pending() {
   const location = useLocation();
   console.log("location: ", location);
   const navigate = useNavigate();
-  const { setAccessToken, GetUser, CreateAccount, isValid, setIsValid } =
+  const { setAccessToken, CreateAccount, isValid, setIsValid, setUser } =
     useApp();
   const acToken = localStorage.getItem("acToken");
 
@@ -25,9 +26,9 @@ export default function Pending() {
 
       setAccessToken({ code })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000))) //wait for second, after Spotify create token.
-        .then(() => {
-          console.log("get user");
-          GetUser();
+        .then(async () => {
+          const response = await GetUser();
+          setUser(response);
         })
         .then(() => {
           console.log("create account");

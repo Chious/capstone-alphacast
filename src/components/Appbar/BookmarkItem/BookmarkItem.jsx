@@ -45,10 +45,10 @@ export const BookmarkItem = ({
       }}
     >
       <Grid container direction="row" height="45px" alignItems="center">
-        <Grid item lg={2.5}>
+        <Grid item lg={2.5} xs={2.5} sm={2.5} md={2.5} xl={2.5}>
           <EmojiMenu init={emoji} />
         </Grid>
-        <Grid item lg={7}>
+        <Grid item lg={7} xs={7} sm={7} md={7} xl={7}>
           <Typography
             sx={{
               height: "24px",
@@ -61,7 +61,7 @@ export const BookmarkItem = ({
             {title}
           </Typography>
         </Grid>
-        <Grid item lg={2.5}>
+        <Grid item lg={2.5} xs={2.5} sm={2.5} md={2.5} xl={2.5}>
           <IconButton
             aria-label="more"
             id="long-button"
@@ -70,7 +70,7 @@ export const BookmarkItem = ({
               handleOpen(e);
             }}
           >
-            <MoreVertIcon />
+            <MoreVertIcon sx={{ color: "#718096" }} />
           </IconButton>
         </Grid>
       </Grid>

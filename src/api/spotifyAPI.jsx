@@ -230,18 +230,15 @@ export const GetUser = async () => {
     },
   };
 
-  axios
+  const response = await axios
     .get(uri, config)
     .then((res) => {
       const { data } = res;
       const { display_name, images } = data;
-      let avator = "";
 
-      if (images.length !== 0) {
-        avator = images[0].url;
-      }
+      const newObj = { display_name: display_name, images: images };
 
-      return res;
+      return newObj;
     })
     .catch(async (err) => {
       //If token is expired, refresh token
@@ -250,6 +247,8 @@ export const GetUser = async () => {
         return GetUser();
       } else {
         console.log("request failed!!!");
+        return "failed";
       }
     });
+  return response;
 };

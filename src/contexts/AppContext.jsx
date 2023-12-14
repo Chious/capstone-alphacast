@@ -8,6 +8,7 @@ const defaultAppContext = {
   setAccessToken: null,
   GetUser: null,
   user: null,
+  setUser: () => {},
   CreateAccount: null,
   bookmark: null,
   setBookmark: null,
@@ -17,6 +18,8 @@ const defaultAppContext = {
   setSavedFavorite: () => {},
   isValid: null,
   setIsValid: () => {},
+  snackState: null,
+  setSnackState: () => {},
 };
 
 const AppContext = createContext(defaultAppContext);
@@ -34,6 +37,13 @@ export const AppProvider = ({ children }) => {
   const [savedFavorite, setSavedFavorite] = useState([]);
   const [isValid, setIsValid] = useState(false);
 
+  //control snackbar
+  const [snackState, setSnackState] = useState({
+    open: false,
+    state: null,
+    message: null,
+  });
+
   return (
     <AppContext.Provider
       value={{
@@ -42,13 +52,8 @@ export const AppProvider = ({ children }) => {
         setAccessToken: async ({ code }) => {
           await GetAccessToken({ code });
         },
-        GetUser: async () => {
-          const response = await GetUser();
-          if (response !== undefined) {
-            setUser(response);
-          }
-        },
         user,
+        setUser,
         CreateAccount: async () => {
           await CreateAccount();
         },
@@ -60,6 +65,8 @@ export const AppProvider = ({ children }) => {
         setSavedFavorite,
         isValid,
         setIsValid,
+        snackState,
+        setSnackState,
       }}
     >
       {children}

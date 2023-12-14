@@ -1,50 +1,75 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { Stack } from "@mui/material";
+import { useApp } from "../../contexts/AppContext";
 
 export default function SimpleSnackbar() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
+  const { snackState, setSnackState } = useApp();
+  const { open, state, message } = snackState;
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setOpen(false);
+    setSnackState({ state: false, message: null });
   };
 
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
+  //return different color, depend on state
+  const colors = {
+    success: "#4CAF50",
+    fail: "#FF5050",
+    unknown: "#F6AE2D",
+  };
+
+  const stateColor = (state) => {
+    return colors[state] || "";
+  };
+
+  const icons = {
+    success: <CheckIcon sx={{ color: stateColor(state) }} />,
+    fail: <CloseIcon sx={{ color: stateColor(state) }} />,
+    unknown: <PriorityHighIcon sx={{ color: stateColor(state) }} />,
+  };
+
+  const stateIcon = (state) => {
+    return icons[state] || "";
+  };
 
   return (
     <div>
-      <Button onClick={handleClick}>Open simple snackbar</Button>
       <Snackbar
+        sx={{
+          "& .MuiSnackbarContent-root": {
+            backgroundColor: "white",
+            color: "black",
+          },
+        }}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
-        message="I Love Snake Bar"
-        action={action}
+        message={
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              style={{
+                border: "2px solid",
+                borderColor: stateColor(state),
+                borderRadius: "20px",
+                width: "30px",
+                height: "30px",
+              }}
+              justifyContent="center"
+              alignItems="center"
+            >
+              {stateIcon(state)}
+            </Stack>
+            <p>{message}</p>
+          </Stack>
+        }
       />
     </div>
   );
