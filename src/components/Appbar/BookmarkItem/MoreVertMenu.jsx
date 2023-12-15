@@ -58,9 +58,24 @@ export default function MoreVertMenu({
         }}
       >
         <MenuList>
-          <MenuItem onClick={handleEdit}>編輯名稱</MenuItem>
-          <MenuItem onClick={handleDelete}>刪除分類</MenuItem>
-          <MenuItem onClick={handleAdd}>新增Podcast</MenuItem>
+          <MenuItem
+            onClick={handleEdit}
+            sx={{ "&:hover": { color: "#FF7F50" } }}
+          >
+            編輯名稱
+          </MenuItem>
+          <MenuItem
+            onClick={handleDelete}
+            sx={{ "&:hover": { color: "#FF7F50" } }}
+          >
+            刪除分類
+          </MenuItem>
+          <MenuItem
+            onClick={handleAdd}
+            sx={{ "&:hover": { color: "#FF7F50" } }}
+          >
+            新增Podcast
+          </MenuItem>
         </MenuList>
       </Paper>
       {searchModal}

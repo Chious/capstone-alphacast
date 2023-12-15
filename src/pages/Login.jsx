@@ -1,4 +1,4 @@
-import { Card, Stack } from "@mui/material";
+import { Card, Grid, Stack } from "@mui/material";
 import IntroGallery from "../components/Login/IntroGallery";
 import LoginButtonGroup from "../components/Login/LoginButtonGroup";
 import { useEffect } from "react";

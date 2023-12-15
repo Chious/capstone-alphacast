@@ -110,11 +110,19 @@ export default function NavigateShowsModal({ open, setOpen, pageId }) {
           </Stack>
           <Box sx={ButtonGroupstyle}>
             <Stack direction="row" justifyContent="end">
-              <Button sx={{ width: "200px" }} onClick={handleClose}>
+              <Button
+                sx={{ width: "200px", color: "#111111" }}
+                onClick={handleClose}
+              >
                 取消
               </Button>
               <Button
-                sx={{ width: "200px" }}
+                sx={{
+                  width: "200px",
+                  background: "#FF7F50",
+                  color: "white",
+                  "&:hover": { background: "white", color: "#FF7F50" },
+                }}
                 onClick={async () => {
                   handleSubmit();
                 }}

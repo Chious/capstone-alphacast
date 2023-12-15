@@ -5,11 +5,12 @@ import img3 from "../../assets/login--3.svg";
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import MobileStepper from "@mui/material/MobileStepper";
 import Typography from "@mui/material/Typography";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import { Stack } from "@mui/material";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -37,14 +38,19 @@ const images = [
 export default function IntroGallery() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
+
+  const maxStep = 2;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep < 2) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    if (activeStep > 0) {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
   };
 
   const handleStepChange = (step) => {
@@ -53,6 +59,26 @@ export default function IntroGallery() {
 
   return (
     <Box sx={{ width: "50vw", height: "100vh", flexGrow: 1 }}>
+      <NavigateBeforeIcon
+        onClick={handleBack}
+        sx={{
+          color: "white",
+          position: "absolute",
+          zIndex: 10,
+          top: "50%",
+        }}
+      />
+      <NavigateNextIcon
+        onClick={handleNext}
+        sx={{
+          color: "white",
+          position: "absolute",
+          zIndex: 10,
+          top: "50%",
+          right: 0,
+        }}
+      />
+      <Stepper activeStep={activeStep} />
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
@@ -91,12 +117,53 @@ export default function IntroGallery() {
           </div>
         ))}
       </AutoPlaySwipeableViews>
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        activeStep={activeStep}
-        style={{ position: "absolute", bottom: 50, left: "74%" }}
-      />
     </Box>
+  );
+}
+
+function Stepper({ activeStep }) {
+  return (
+    <Stack
+      direction="row"
+      spacing={2}
+      style={{
+        color: "black",
+        position: "absolute",
+        zIndex: 10,
+        bottom: 70,
+        left: "68%",
+      }}
+    >
+      <div
+        style={{
+          height: "5px",
+          width: "50px",
+          background:
+            activeStep === 0 ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.5)",
+          border: "1px solid transparent",
+          borderRadius: "5px",
+        }}
+      />
+      <div
+        style={{
+          height: "5px",
+          width: "50px",
+          background:
+            activeStep === 1 ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.5)",
+          border: "1px solid transparent",
+          borderRadius: "5px",
+        }}
+      />
+      <div
+        style={{
+          height: "5px",
+          width: "50px",
+          background:
+            activeStep === 2 ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.5)",
+          border: "1px solid transparent",
+          borderRadius: "5px",
+        }}
+      />
+    </Stack>
   );
 }
