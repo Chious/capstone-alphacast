@@ -283,8 +283,13 @@ export const GetUser = async () => {
     .then((res) => {
       const { data } = res;
       const { display_name, images } = data;
+      console.log("user data", data);
+      const isImage = images.length !== 0;
 
-      const newObj = { display_name: display_name, images: images[0]["url"] };
+      const newObj = {
+        display_name: display_name,
+        images: isImage ? images[0]["url"] : undefined,
+      };
       localStorage.setItem("user", JSON.stringify(newObj));
 
       return newObj;
@@ -295,8 +300,9 @@ export const GetUser = async () => {
         await getRefreshToken();
         return GetUser();
       } else {
-        console.log("request failed!!!");
-        return "failed";
+        const newObj = { display_name: "Default", images: "" };
+        localStorage.setItem("user", JSON.stringify(newObj));
+        return newObj;
       }
     });
   return response;

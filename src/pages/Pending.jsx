@@ -10,11 +10,8 @@ import { GetUser } from "../api/spotifyAPI";
 
 export default function Pending() {
   const location = useLocation();
-  console.log("location: ", location);
   const navigate = useNavigate();
-  const { setAccessToken, CreateAccount, isValid, setIsValid, setUser } =
-    useApp();
-  const acToken = localStorage.getItem("acToken");
+  const { setAccessToken, CreateAccount, isValid, setIsValid } = useApp();
 
   //1. Get Access token from Spotify and backend
   useEffect(() => {
@@ -26,17 +23,26 @@ export default function Pending() {
       setAccessToken({ code })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000))) //wait for second, after Spotify create token.
         .then(async () => {
-          const response = await GetUser();
-          setUser(response);
+          console.log("get user");
+          await GetUser();
         })
         .then(() => {
+          console.log("create account");
           CreateAccount();
         })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000)))
         .then(() => {
+          console.log("set valid");
           setIsValid(true);
         })
-        .catch(setIsValid(false));
+        .catch((err) => {
+          console.log("err", err);
+          if (localStorage.getItem("acToken")) {
+            setIsValid(true);
+          } else {
+            setIsValid(false);
+          }
+        });
     }
   }, []);
 
