@@ -23,16 +23,13 @@ export default function Pending() {
       setAccessToken({ code })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000))) //wait for second, after Spotify create token.
         .then(async () => {
-          console.log("get user");
           await GetUser();
         })
         .then(() => {
-          console.log("create account");
           CreateAccount();
         })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000)))
         .then(() => {
-          console.log("set valid");
           setIsValid(true);
         })
         .catch((err) => {

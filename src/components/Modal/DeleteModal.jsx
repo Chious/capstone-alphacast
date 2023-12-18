@@ -85,7 +85,6 @@ export default function DeleteModal({ editBookmark, setEditBookmark }) {
 
   React.useEffect(() => {
     if (editBookmark.edit === "delete") {
-      console.log("target: ", editBookmark);
       setOpen(true);
     }
   }, [editBookmark]);

@@ -283,7 +283,6 @@ export const GetUser = async () => {
     .then((res) => {
       const { data } = res;
       const { display_name, images } = data;
-      console.log("user data", data);
       const isImage = images.length !== 0;
 
       const newObj = {

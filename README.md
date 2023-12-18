@@ -28,12 +28,12 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
+![](./screenshot.png)
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [https://github.com/Chious/capstone-alphacast](https://github.com/Chious/capstone-alphacast)
+- Live Site URL: [https://capstone-alphacast.vercel.app](https://capstone-alphacast.vercel.app)
 
 ## My process
 
@@ -46,10 +46,6 @@ Users should be able to:
 - Mobile-first workflow
 - [React](https://reactjs.org/) - JS library
 - [MUI](https:mui.com/) - For styles
-
-### What I learned
-
-### Continued development
 
 ### Useful resources
 

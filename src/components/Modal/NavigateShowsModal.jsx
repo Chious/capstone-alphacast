@@ -70,7 +70,6 @@ export default function NavigateShowsModal({ open, setOpen, pageId }) {
 
       const res = await addShowToCategory({ categoryId: pageId, showId: id }); // post id to categories
       if (res === "success") {
-        console.log("success!");
         handleClose(); // Close the modal
       }
     }

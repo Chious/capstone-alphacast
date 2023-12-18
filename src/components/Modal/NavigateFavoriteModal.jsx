@@ -68,11 +68,9 @@ export default function NavigateModal({ open, setOpen }) {
   const handleSubmit = async () => {
     if (card.id !== null) {
       const { id } = card; //Episode ID
-      console.log("id: ", id);
 
       const res = await PostFavorite(id); // post id to favorite
       if (res === "success") {
-        console.log("success!");
         handleClose(); // Close the modal
       }
     }
