@@ -59,7 +59,8 @@ export default function EditModal({ editBookmark, setEditBookmark }) {
   const handleInput = (event) =>
     setListenInput({ ...listenInput, title: event.target.value });
   const handleEmoji = (emoji) => {
-    setListenInput({ ...listenInput, emoji: emoji });
+    const icon = emoji.emoji;
+    setListenInput({ ...listenInput, emoji: icon });
   };
 
   const handleRevise = async () => {
