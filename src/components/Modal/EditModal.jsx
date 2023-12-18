@@ -152,14 +152,25 @@ export default function EditModal({ editBookmark, setEditBookmark }) {
             </IconButton>
           </Stack>
           <Stack id="modal-modal-description" sx={{ mt: 2 }} direction="row">
-            <EmojiMenu handleEmoji={handleEmoji} init={listenInput.emoji} />
-            <input
-              type="text"
-              value={listenInput.title}
-              placeholder="我的Podcast"
-              onChange={handleInput}
-              name="edit"
-            />
+            <Stack
+              direction="row"
+              sx={{ background: "#F7F7F7", width: "100%" }}
+            >
+              <EmojiMenu handleEmoji={handleEmoji} init={listenInput.emoji} />
+              <input
+                type="text"
+                value={listenInput.title}
+                placeholder="我的Podcast"
+                onChange={handleInput}
+                name="edit"
+                style={{
+                  color: "black",
+                  background: "transparent",
+                  border: "1px solid transparent",
+                  width: "100%",
+                }}
+              />
+            </Stack>
           </Stack>
           <Box sx={ButtonGroupstyle}>
             <Stack direction="row" justifyContent="end">

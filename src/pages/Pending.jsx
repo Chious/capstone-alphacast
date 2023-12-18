@@ -21,7 +21,6 @@ export default function Pending() {
     const state = new URLSearchParams(location.search).get("state");
 
     if (location.pathname === "/pending" && state) {
-      console.log("useEffect: ");
       const code = new URLSearchParams(location.search).get("code");
 
       setAccessToken({ code })
@@ -31,12 +30,10 @@ export default function Pending() {
           setUser(response);
         })
         .then(() => {
-          console.log("create account");
           CreateAccount();
         })
         .then(() => new Promise((reslove) => setTimeout(reslove, 2000)))
         .then(() => {
-          console.log("set valid");
           setIsValid(true);
         })
         .catch(setIsValid(false));

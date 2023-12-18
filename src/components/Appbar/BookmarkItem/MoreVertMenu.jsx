@@ -13,7 +13,6 @@ export default function MoreVertMenu({
 }) {
   const { open, xPosition, yPosition } = moreVertPosition;
   const openCss = open ? "visible" : "hidden";
-
   // get PageId
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -64,12 +63,14 @@ export default function MoreVertMenu({
           >
             編輯名稱
           </MenuItem>
-          <MenuItem
-            onClick={handleDelete}
-            sx={{ "&:hover": { color: "#FF7F50" } }}
-          >
-            刪除分類
-          </MenuItem>
+          {editBookmark.target !== "/favorite" && (
+            <MenuItem
+              onClick={handleDelete}
+              sx={{ "&:hover": { color: "#FF7F50" } }}
+            >
+              刪除分類
+            </MenuItem>
+          )}
           <MenuItem
             onClick={handleAdd}
             sx={{ "&:hover": { color: "#FF7F50" } }}

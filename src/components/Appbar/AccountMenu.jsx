@@ -4,20 +4,19 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
+
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Typography, Stack } from "@mui/material";
-import { useApp } from "../../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 
 export default function AccountMenu() {
   //Get user info
-  const { user } = useApp();
+  const user = JSON.parse(localStorage.getItem("user"));
   const { display_name, images } = user;
-  const imgsrc = images[0]["url"];
+  const imgsrc = images;
 
   const avatar =
     imgsrc !== undefined ? (

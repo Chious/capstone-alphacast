@@ -59,6 +59,7 @@ export const BookmarkCard = ({ data, setOpen, setShowId }) => {
           <p
             className="song-card-author"
             style={{
+              color: "#93989A",
               height: "24px",
               textOverflow: "ellipsis",
               overflow: "hidden",
@@ -66,7 +67,19 @@ export const BookmarkCard = ({ data, setOpen, setShowId }) => {
           >
             {publisher}
           </p>
-          <Button onClick={handleOpen}>更多</Button>
+          <button
+            onClick={handleOpen}
+            style={{
+              height: "40px",
+              width: "80px",
+              background: "#30A9DE",
+              color: "white",
+              border: "1px solid transparent",
+              borderRadius: "5px",
+            }}
+          >
+            更多
+          </button>
         </Stack>
       </Card>
     </Grid>

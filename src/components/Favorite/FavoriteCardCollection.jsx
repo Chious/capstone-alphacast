@@ -39,7 +39,7 @@ const FavoriteCard = ({ data }) => {
         style={selectStyle}
       >
         <Grid container direction="row" spacing={2}>
-          <Grid item lg={2}>
+          <Grid item lg={2} xs={2} sm={2} md={2} xl={2}>
             <Image
               className="song-card-img"
               src={imgSrc}
@@ -47,7 +47,7 @@ const FavoriteCard = ({ data }) => {
               fit="cover"
             />
           </Grid>
-          <Grid item lg={10}>
+          <Grid item lg={10} xs={10} sm={10} md={10} xl={10}>
             <Stack spacing={1}>
               <Stack
                 width="100%"

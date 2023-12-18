@@ -58,7 +58,7 @@ const SaveIconButton = ({ id }) => {
     if (savedFavorite.includes(id)) {
       setSave(true);
     }
-  }, []);
+  }, [id]);
 
   const handleSave = async () => {
     if (savedFavorite.includes(id)) {

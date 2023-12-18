@@ -156,21 +156,33 @@ function SearchInput({ setData }) {
   };
 
   return (
-    <Stack direction="row" alignItems="center" spacing={1} width="100%">
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      width="100%"
+      sx={{
+        background: "#F5F5F5",
+        p: 1,
+        border: "1px solid transparent",
+        borderRadius: "5px",
+      }}
+    >
       <SearchIcon />
-      <TextField
-        placeholder="type something..."
+      <input
+        placeholder="開始搜尋..."
         onChange={handleInput}
-        sx={{ height: "50px", width: "80%" }}
-      />
-      <Button
-        onClick={async () => {
-          handleClick();
+        style={{
+          color: "black",
+          height: "30px",
+          width: "90%",
+          background: "transparent",
+          border: "1px solid transparent",
         }}
-        style={{ height: "50px" }}
-      >
-        提交
-      </Button>
+        onKeyDown={async (e) => {
+          handleKeyPress(e);
+        }}
+      />
     </Stack>
   );
 }

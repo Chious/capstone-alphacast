@@ -22,7 +22,18 @@ export default function NoEpisodeFound({ pageId }) {
       >
         <Image src={folder} duration={0} width="50px" height="50px" />
         <h1>您尚未加入任何節目，可以點擊下方按鈕新增！</h1>
-        <button onClick={handleOpen}>新增節目</button>
+        <button
+          onClick={handleOpen}
+          style={{
+            width: "150px",
+            height: "40px",
+            background: "#FF7F50",
+            border: "1px solid transparent",
+            borderRadius: "5px",
+          }}
+        >
+          新增節目
+        </button>
       </Stack>
       <NavigateShowsModal open={open} setOpen={setOpen} pageId={pageId} />
     </>

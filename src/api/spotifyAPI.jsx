@@ -30,7 +30,15 @@ export const searchEpisodes = async ({ input }) => {
     .then((data) => {
       return data;
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      //If token is expired, refresh token
+      if (err.error.status === 401) {
+        await getRefreshToken();
+      } else {
+        console.log("request failed!!!");
+        return "failed";
+      }
+    });
 
   if (response !== undefined) {
     return response.data.episodes.items;
@@ -73,7 +81,15 @@ export const searchEpisodeDetail = async (ids) => {
 
       return episodeInfo;
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      //If token is expired, refresh token
+      if (err.error.status === 401) {
+        await getRefreshToken();
+      } else {
+        console.log("request failed!!!");
+        return "failed";
+      }
+    });
 
   return response;
 };
@@ -103,7 +119,15 @@ export const GetAuthors = async (ids) => {
       });
       return authorList;
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      //If token is expired, refresh token
+      if (err.error.status === 401) {
+        await getRefreshToken();
+      } else {
+        console.log("request failed!!!");
+        return "failed";
+      }
+    });
 
   return response;
 };
@@ -129,7 +153,15 @@ export const searchShows = async ({ input }) => {
     .then((data) => {
       return data.data.shows.items;
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      //If token is expired, refresh token
+      if (err.error.status === 401) {
+        await getRefreshToken();
+      } else {
+        console.log("request failed!!!");
+        return "failed";
+      }
+    });
 
   if (response !== undefined) {
     return response;
@@ -170,7 +202,15 @@ export const searchShowDetail = async (ids) => {
 
       return showInfo;
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      //If token is expired, refresh token
+      if (err.error.status === 401) {
+        await getRefreshToken();
+      } else {
+        console.log("request failed!!!");
+        return "failed";
+      }
+    });
 
   return response;
 };
@@ -207,7 +247,15 @@ export const getShowEpisodes = async (id) => {
 
       return filterData;
     })
-    .catch((err) => console.log(err));
+    .catch(async (err) => {
+      //If token is expired, refresh token
+      if (err.error.status === 401) {
+        await getRefreshToken();
+      } else {
+        console.log("request failed!!!");
+        return "failed";
+      }
+    });
 
   return response;
 };
@@ -236,7 +284,8 @@ export const GetUser = async () => {
       const { data } = res;
       const { display_name, images } = data;
 
-      const newObj = { display_name: display_name, images: images };
+      const newObj = { display_name: display_name, images: images[0]["url"] };
+      localStorage.setItem("user", JSON.stringify(newObj));
 
       return newObj;
     })
