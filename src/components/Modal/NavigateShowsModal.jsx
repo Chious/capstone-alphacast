@@ -144,13 +144,15 @@ function SearchInput({ setData }) {
     setInput(e.target.value);
   };
 
-  const handleClick = async () => {
-    const response = await searchShows({ input });
-    if (response !== undefined) {
-      const ids = response.map((obj) => {
-        return obj.id;
-      });
-      setData(response);
+  const handleKeyPress = async (event) => {
+    if (event.key === "Enter") {
+      const response = await searchShows({ input });
+      if (response !== undefined) {
+        const ids = response.map((obj) => {
+          return obj.id;
+        });
+        setData(response);
+      }
     }
   };
 
